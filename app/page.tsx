@@ -108,8 +108,8 @@ export default function RegionGate() {
               <Image
                 src={c.img}
                 alt="decor"
-                width={100}
-                height={100}
+                width={40}
+                height={40}
                 className="object-contain drop-shadow-[0_20px_60px_rgba(0,0,0,0.35)]"
                 priority={idx < 2}
               />
