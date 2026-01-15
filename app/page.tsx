@@ -6,19 +6,13 @@ import { useRouter } from "next/navigation";
 
 type Region = "us" | "haiti";
 
-/* =========================================================
-   ✅ 1) FLAGS SETTINGS (USA + HAITI)
-   ========================================================= */
 const FLAG_BOX_H = "h-[160px] sm:h-[190px] md:h-[220px]";
 const FLAG_PADDING = "p-4 sm:p-6";
 
-/* =========================================================
-   ✅ 2) FLOATING CATEGORY IMAGES
-   ========================================================= */
-const categories = [
+const floating = [
   {
     img: "/images/listproduc/electro.png",
-    size: "w-[352px] h-[352px] sm:w-[268px] sm:h-[268px] md:w-[290px] md:h-[290px]",
+    size: "w-[352px] h-[352px] sm:w-[268px] sm:h-[268px] md:w-[90px] md:h-[90px]",
     pos: "left-[-48%] bottom-[-16px] sm:bottom-[-30px] md:bottom-[-205px]",
   },
   {
@@ -42,7 +36,7 @@ const categories = [
     pos: "top-[-10px] sm:top-[-28px] md:top-[325px] right-[44%]",
   },
   {
-    img: "/images/mhanac logo1.png",
+    img: "/images/mhanac%20logo1.png", // ✅ important si ton fichier contient un espace
     size: "w-[372px] h-[372px] sm:w-[188px] sm:h-[188px] md:w-[270px] md:h-[270px]",
     pos: "left-[-15px] sm:left-[-35px] md:left-[-30px] top-[55px] md:top-[-200px]",
   },
@@ -71,19 +65,14 @@ export default function RegionGate() {
 
   function choose(region: Region) {
     setSelected(region);
-
-    // ✅ Save region for products page
     localStorage.setItem("MHANAC_REGION", region);
 
-    // ✅ Default language by region
     const defaultLang = region === "us" ? "en" : "ht";
-
-    // ✅ Send to products with region in query
     router.push(`/${defaultLang}/products?region=${region}`);
   }
 
   return (
-    <main className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 py-10 sm:py-16 text-white">
+    <main className="relative isolate min-h-screen overflow-visible flex items-center justify-center px-4 sm:px-6 py-10 sm:py-16 text-white">
       {/* ✅ Background */}
       <div className="absolute inset-0 -z-20">
         <Image
@@ -107,27 +96,22 @@ export default function RegionGate() {
         </div>
       </div>
 
-      {/* ✅ Wrapper relative */}
-      <div className="relative w-full max-w-5xl">
-        {/* ✅ Floating images */}
-        <div className="pointer-events-none">
-          {categories.map((c, idx) => (
+      {/* ✅ Wrapper */}
+      <div className="relative w-full max-w-5xl overflow-visible">
+        {/* ✅ Floating layer ABOVE card */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 z-30 overflow-visible">
+          {floating.map((c, idx) => (
             <div
               key={idx}
-              className={[
-                "absolute z-20",
-                c.pos,
-                c.size,
-                "grid place-items-center",
-                "rounded-2xl",
-              ].join(" ")}
+              className={["absolute", c.pos, c.size, "overflow-visible"].join(" ")}
             >
               <Image
                 src={c.img}
-                alt="category"
-                width={580}
-                height={580}
-                className="object-contain"
+                alt="decor"
+                width={100}
+                height={100}
+                className="object-contain drop-shadow-[0_20px_60px_rgba(0,0,0,0.35)]"
+                priority={idx < 2}
               />
             </div>
           ))}
@@ -147,18 +131,12 @@ export default function RegionGate() {
             Select your country to continue.
           </p>
 
-          {/* ✅ Flags */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-7">
-            {/* USA */}
             <button
               type="button"
               onClick={() => choose("us")}
               aria-label="Choose USA"
-              className={[
-                "relative group",
-                "transition",
-                FLAG_BOX_H,
-              ].join(" ")}
+              className={["relative group transition", FLAG_BOX_H].join(" ")}
             >
               <Image
                 src="/images/usa.png"
@@ -174,16 +152,11 @@ export default function RegionGate() {
               />
             </button>
 
-            {/* HAITI */}
             <button
               type="button"
               onClick={() => choose("haiti")}
               aria-label="Choose Haiti"
-              className={[
-                "relative group",
-                "transition",
-                FLAG_BOX_H,
-              ].join(" ")}
+              className={["relative group transition", FLAG_BOX_H].join(" ")}
             >
               <Image
                 src="/images/haiti.png"
