@@ -9,36 +9,36 @@ type Region = "us" | "haiti";
 const FLAG_BOX_H = "h-[160px] sm:h-[190px] md:h-[220px]";
 const FLAG_PADDING = "p-4 sm:p-6";
 
+/**
+ * ✅ Tip:
+ * - Si ou vle yo rete FIX sou ekran an: sèvi ak `fixed bottom-0`
+ * - Si ou vle yo tache sou kat la: sèvi ak `absolute` anndan wrapper la
+ */
 const floating = [
   {
     img: "/images/listproduc/electro.png",
-    size: "w-[352px] h-[352px] sm:w-[268px] sm:h-[268px] md:w-[90px] md:h-[90px]",
-    pos: "left-[-48%] bottom-[-16px] sm:bottom-[-30px] md:bottom-[-205px]",
+    size: "w-[170px] h-[170px] sm:w-[220px] sm:h-[220px] md:w-[260px] md:h-[260px]",
+    pos: "left-6 bottom-2",
   },
   {
     img: "/images/listproduc/beauty.png",
-    size: "w-[472px] h-[472px] sm:w-[388px] sm:h-[388px] md:w-[10px] md:h-[10px]",
-    pos: "top-[-10px] sm:top-[-28px] md:top-[285px] right-[84%]",
-  },
-  {
-    img: "/images/listproduc/fashion.png",
-    size: "w-[472px] h-[472px] sm:w-[288px] sm:h-[288px] md:w-[10px] md:h-[10px]",
-    pos: "right-[-5px] sm:right-[-5px] md:right-[122px] top-[55px] md:top-[370px]",
-  },
-  {
-    img: "/images/listproduc/home.png",
-    size: "w-[572px] h-[572px] sm:w-[488px] sm:h-[488px] md:w-[410px] md:h-[410px]",
-    pos: "right-[-20px] sm:right-[-25px] md:right-[-380px] bottom-[-205px] md:bottom-[-200px]",
+    size: "w-[180px] h-[180px] sm:w-[230px] sm:h-[230px] md:w-[280px] md:h-[280px]",
+    pos: "left-[140px] bottom-2 sm:left-[210px]",
   },
   {
     img: "/images/listproduc/groce1.png",
-    size: "w-[352px] h-[352px] sm:w-[288px] sm:h-[288px] md:w-[330px] md:h-[330px]",
-    pos: "top-[-10px] sm:top-[-28px] md:top-[325px] right-[44%]",
+    size: "w-[210px] h-[210px] sm:w-[260px] sm:h-[260px] md:w-[320px] md:h-[320px]",
+    pos: "left-1/2 -translate-x-1/2 bottom-1",
   },
   {
-    img: "/images/mhanac%20logo1.png", // ✅ important si ton fichier contient un espace
-    size: "w-[372px] h-[372px] sm:w-[188px] sm:h-[188px] md:w-[270px] md:h-[270px]",
-    pos: "left-[-15px] sm:left-[-35px] md:left-[-30px] top-[55px] md:top-[-200px]",
+    img: "/images/listproduc/fashion.png",
+    size: "w-[210px] h-[210px] sm:w-[250px] sm:h-[250px] md:w-[300px] md:h-[300px]",
+    pos: "right-[160px] bottom-2 sm:right-[220px]",
+  },
+  {
+    img: "/images/listproduc/home.png",
+    size: "w-[240px] h-[240px] sm:w-[300px] sm:h-[300px] md:w-[360px] md:h-[360px]",
+    pos: "right-6 bottom-0",
   },
 ] as const;
 
@@ -66,13 +66,12 @@ export default function RegionGate() {
   function choose(region: Region) {
     setSelected(region);
     localStorage.setItem("MHANAC_REGION", region);
-
     const defaultLang = region === "us" ? "en" : "ht";
     router.push(`/${defaultLang}/products?region=${region}`);
   }
 
   return (
-    <main className="relative isolate min-h-screen overflow-visible flex items-center justify-center px-4 sm:px-6 py-10 sm:py-16 text-white">
+    <main className="relative min-h-screen overflow-hidden flex items-center justify-center px-4 sm:px-6 py-10 sm:py-16 text-white">
       {/* ✅ Background */}
       <div className="absolute inset-0 -z-20">
         <Image
@@ -86,42 +85,29 @@ export default function RegionGate() {
         <div className="absolute inset-0 bg-black/45" />
       </div>
 
-      {/* Background big text */}
-      <div
-        aria-hidden
-        className="fixed inset-0 -z-10 grid place-items-center opacity-[0.10] pointer-events-none select-none text-center px-6"
-      >
-        <div className="text-[34px] sm:text-[42px] md:text-[64px] font-black tracking-wide leading-tight">
-          {phrases[i].text}
-        </div>
+      {/* ✅ Floating images FIXED at the bottom (BEHIND card) */}
+      <div aria-hidden className="fixed inset-x-0 bottom-0 z-0 pointer-events-none">
+        {floating.map((c, idx) => (
+          <div
+            key={idx}
+            className={["absolute", c.pos, c.size, "relative"].join(" ")}
+          >
+            <Image
+              src={c.img}
+              alt="decor"
+              fill
+              className="object-contain drop-shadow-[0_18px_40px_rgba(0,0,0,0.25)]"
+              sizes="300px"
+              priority={idx < 2}
+            />
+          </div>
+        ))}
       </div>
 
-      {/* ✅ Wrapper */}
-      <div className="relative w-full max-w-5xl overflow-visible">
-        {/* ✅ Floating layer ABOVE card */}
-        <div aria-hidden className="pointer-events-none absolute inset-0 z-30 overflow-visible">
-          {floating.map((c, idx) => (
-            <div
-              key={idx}
-              className={["absolute", c.pos, c.size, "overflow-visible"].join(" ")}
-            >
-              <Image
-                src={c.img}
-                alt="decor"
-                width={40}
-                height={40}
-                className="object-contain drop-shadow-[0_20px_60px_rgba(0,0,0,0.35)]"
-                priority={idx < 2}
-              />
-            </div>
-          ))}
-        </div>
-
-        {/* ✅ Foreground card */}
-        <div className="relative z-10 rounded-3xl border border-white/15 bg-white/10 backdrop-blur-xl p-5 sm:p-6 md:p-10 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
-          <div className="flex justify-between gap-3 flex-wrap">
-            <div className="font-black tracking-wide">MHANAC</div>
-          </div>
+      {/* ✅ Foreground card (ABOVE images) */}
+      <div className="relative z-10 w-full max-w-5xl">
+        <div className="rounded-3xl border border-white/15 bg-white/10 backdrop-blur-xl p-5 sm:p-6 md:p-10 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
+          <div className="font-black tracking-wide">MHANAC</div>
 
           <h1 className="mt-4 text-2xl sm:text-3xl md:text-5xl font-semibold leading-tight">
             {phrases[i].text}
