@@ -3,30 +3,60 @@
 import Image from "next/image";
 import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useRegion } from "./providers/RegionProvider"; // ✅ Solution 3
 
 type Region = "us" | "haiti";
 
-/**
- * ✅ TUNING (change these 2 values to resize BOTH flags equally)
- * - FLAG_BOX_H: height of the flag image box (same for USA + Haiti)
- * - FLAG_PADDING: padding inside the flag image box
- */
-const FLAG_BOX_H = "h-[80px] md:h-[60px]";
-const FLAG_PADDING = "p-3";
+/* =========================================================
+   ✅ 1) FLAGS SETTINGS (USA + HAITI)
+   ========================================================= */
+const FLAG_BOX_H = "h-[160px] sm:h-[190px] md:h-[220px]";
+const FLAG_PADDING = "p-4 sm:p-6";
+
+/* =========================================================
+   ✅ 2) FLOATING CATEGORY IMAGES
+   ========================================================= */
+const categories = [
+  {
+    img: "/images/listproduc/electro.png",
+    size: "w-[352px] h-[352px] sm:w-[268px] sm:h-[268px] md:w-[290px] md:h-[290px]",
+    pos: "left-[-48%] bottom-[-16px] sm:bottom-[-30px] md:bottom-[-205px]",
+  },
+  {
+    img: "/images/listproduc/beauty.png",
+    size: "w-[472px] h-[472px] sm:w-[388px] sm:h-[388px] md:w-[410px] md:h-[410px]",
+    pos: "top-[-10px] sm:top-[-28px] md:top-[285px] right-[84%]",
+  },
+  {
+    img: "/images/listproduc/fashion.png",
+    size: "w-[472px] h-[472px] sm:w-[288px] sm:h-[288px] md:w-[310px] md:h-[310px]",
+    pos: "right-[-5px] sm:right-[-5px] md:right-[122px] top-[55px] md:top-[370px]",
+  },
+  {
+    img: "/images/listproduc/home.png",
+    size: "w-[572px] h-[572px] sm:w-[488px] sm:h-[488px] md:w-[410px] md:h-[410px]",
+    pos: "right-[-20px] sm:right-[-25px] md:right-[-380px] bottom-[-205px] md:bottom-[-200px]",
+  },
+  {
+    img: "/images/listproduc/groce1.png",
+    size: "w-[352px] h-[352px] sm:w-[288px] sm:h-[288px] md:w-[330px] md:h-[330px]",
+    pos: "top-[-10px] sm:top-[-28px] md:top-[325px] right-[44%]",
+  },
+  {
+    img: "/images/mhanac logo1.png",
+    size: "w-[372px] h-[372px] sm:w-[188px] sm:h-[188px] md:w-[270px] md:h-[270px]",
+    pos: "left-[-15px] sm:left-[-35px] md:left-[-30px] top-[55px] md:top-[-200px]",
+  },
+] as const;
 
 export default function RegionGate() {
   const router = useRouter();
 
-  // ✅ from Solution 3 (global state + persistence)
-  const { setRegionAndLang } = useRegion();
-
   const phrases = useMemo(
     () => [
-      { lang: "EN", text: "What is your region?" },
-      { lang: "FR", text: "Quelle est votre région ?" },
-      { lang: "HT", text: "Ki rejyon ou ye ?" },
-      { lang: "ES", text: "¿Cuál es tu región?" },
+      { text: "What is your region?" },
+      { text: "Quelle est votre région ?" },
+      { text: "Ki rejyon ou ye ?" },
+      { text: "¿Cuál es tu región?" },
     ],
     []
   );
@@ -42,21 +72,19 @@ export default function RegionGate() {
   function choose(region: Region) {
     setSelected(region);
 
-    // ✅ Solution 3:
-    // This will set region + default language AND persist (cookies/localStorage handled in provider)
-    setRegionAndLang(region);
+    // ✅ Save region for products page
+    localStorage.setItem("MHANAC_REGION", region);
 
-    // ✅ Redirect to Products
+    // ✅ Default language by region
     const defaultLang = region === "us" ? "en" : "ht";
-    router.push(`/${defaultLang}/products`);
+
+    // ✅ Send to products with region in query
+    router.push(`/${defaultLang}/products?region=${region}`);
   }
 
-  const borderClass = (r: Region) =>
-    selected === r ? "border-green-500" : "border-blue-500 hover:border-blue-400";
-
   return (
-    <main className="relative min-h-screen flex items-center justify-center px-6 py-16 text-white">
-      {/* ✅ Background front.png (responsive all screens) */}
+    <main className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 py-10 sm:py-16 text-white">
+      {/* ✅ Background */}
       <div className="absolute inset-0 -z-20">
         <Image
           src="/images/front.png"
@@ -74,95 +102,104 @@ export default function RegionGate() {
         aria-hidden
         className="fixed inset-0 -z-10 grid place-items-center opacity-[0.10] pointer-events-none select-none text-center px-6"
       >
-        <div className="text-[42px] md:text-[64px] font-black tracking-wide leading-tight">
+        <div className="text-[34px] sm:text-[42px] md:text-[64px] font-black tracking-wide leading-tight">
           {phrases[i].text}
-        </div>
-        <div className="mt-3 text-xs md:text-sm tracking-[0.5em]">
-          {phrases[i].lang}
         </div>
       </div>
 
-      {/* Foreground card */}
-      <div className="w-full max-w-5xl rounded-3xl border border-white/15 bg-white/10 backdrop-blur-xl p-6 md:p-10 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
-        <div className="flex justify-between gap-3 flex-wrap">
-          <div className="font-black tracking-wide">MHANAC</div>
-          <div className="text-xs opacity-90">EN • FR • KREYÒL • ES</div>
+      {/* ✅ Wrapper relative */}
+      <div className="relative w-full max-w-5xl">
+        {/* ✅ Floating images */}
+        <div className="pointer-events-none">
+          {categories.map((c, idx) => (
+            <div
+              key={idx}
+              className={[
+                "absolute z-20",
+                c.pos,
+                c.size,
+                "grid place-items-center",
+                "rounded-2xl",
+              ].join(" ")}
+            >
+              <Image
+                src={c.img}
+                alt="category"
+                width={580}
+                height={580}
+                className="object-contain"
+              />
+            </div>
+          ))}
         </div>
 
-        <h1 className="mt-4 text-3xl md:text-5xl font-semibold leading-tight">
-          {phrases[i].text}
-        </h1>
-        <p className="mt-2 text-white/85">
-          Select your country to continue. The language + region settings will be applied,
-          then you will go to Products.
-        </p>
+        {/* ✅ Foreground card */}
+        <div className="relative z-10 rounded-3xl border border-white/15 bg-white/10 backdrop-blur-xl p-5 sm:p-6 md:p-10 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
+          <div className="flex justify-between gap-3 flex-wrap">
+            <div className="font-black tracking-wide">MHANAC</div>
+          </div>
 
-        {/* ✅ Flag images */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-7">
-          {/* USA */}
-          <button
-            type="button"
-            onClick={() => choose("us")}
-            className={`group rounded-2xl border-2 ${borderClass(
-              "us"
-            )} bg-white/80 text-slate-900 overflow-hidden transition shadow-[0_12px_35px_rgba(2,6,23,0.20)]`}
-            aria-label="Choose USA"
-          >
-            {/* ✅ SAME size box + SAME padding for both flags */}
-            <div className={`relative ${FLAG_BOX_H}`}>
+          <h1 className="mt-4 text-2xl sm:text-3xl md:text-5xl font-semibold leading-tight">
+            {phrases[i].text}
+          </h1>
+
+          <p className="mt-2 text-white/85 text-sm sm:text-base">
+            Select your country to continue.
+          </p>
+
+          {/* ✅ Flags */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-7">
+            {/* USA */}
+            <button
+              type="button"
+              onClick={() => choose("us")}
+              aria-label="Choose USA"
+              className={[
+                "relative group",
+                "transition",
+                FLAG_BOX_H,
+              ].join(" ")}
+            >
               <Image
                 src="/images/usa.png"
                 alt="USA"
                 fill
-                className={`object-contain ${FLAG_PADDING} transition-transform duration-300 group-hover:scale-[1.07]`}
+                priority
+                className={[
+                  "object-contain",
+                  FLAG_PADDING,
+                  "transition-transform duration-300 group-hover:scale-[1.08]",
+                ].join(" ")}
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
-            </div>
-            <div className="px-6 pb-6 text-left">
-              <div className="font-bold text-lg">United States</div>
-              <div className="text-sm text-slate-600 mt-1">
-                Default language: English
-              </div>
-              <div className="mt-3 text-sm font-semibold text-blue-700 group-hover:text-blue-800">
-                Continue to Products →
-              </div>
-            </div>
-          </button>
+            </button>
 
-          {/* Haiti */}
-          <button
-            type="button"
-            onClick={() => choose("haiti")}
-            className={`group rounded-2xl border-2 ${borderClass(
-              "haiti"
-            )} bg-white/80 text-slate-900 overflow-hidden transition shadow-[0_12px_35px_rgba(2,6,23,0.20)]`}
-            aria-label="Choose Haiti"
-          >
-            {/* ✅ SAME size box + SAME padding for both flags */}
-            <div className={`relative ${FLAG_BOX_H}`}>
+            {/* HAITI */}
+            <button
+              type="button"
+              onClick={() => choose("haiti")}
+              aria-label="Choose Haiti"
+              className={[
+                "relative group",
+                "transition",
+                FLAG_BOX_H,
+              ].join(" ")}
+            >
               <Image
                 src="/images/haiti.png"
                 alt="Haiti"
                 fill
-                className={`object-contain ${FLAG_PADDING} transition-transform duration-300 group-hover:scale-[1.07]`}
+                priority
+                className={[
+                  "object-contain",
+                  FLAG_PADDING,
+                  "transition-transform duration-300 group-hover:scale-[1.08]",
+                ].join(" ")}
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
-            </div>
-            <div className="px-6 pb-6 text-left">
-              <div className="font-bold text-lg">Haïti</div>
-              <div className="text-sm text-slate-600 mt-1">
-                Lang default: Kreyòl Ayisyen
-              </div>
-              <div className="mt-3 text-sm font-semibold text-blue-700 group-hover:text-blue-800">
-                Kontinye nan Pwodwi yo →
-              </div>
-            </div>
-          </button>
+            </button>
+          </div>
         </div>
-
-        <p className="mt-6 text-xs text-white/80">
-          Tip: Hover to zoom • Border becomes green when selected • You can login later to buy.
-        </p>
       </div>
     </main>
   );
