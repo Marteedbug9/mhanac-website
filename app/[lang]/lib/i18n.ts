@@ -52,7 +52,8 @@ export const t = {
       send: "Send Message",
       note: "We reply within 1–2 business days.",
     },
-    categories: {
+    
+  categories: {
   deals: "Deals",
   electronics: "Electronics",
   home_kitchen: "Home & Kitchen",
@@ -70,6 +71,31 @@ export const t = {
   services: "Services",
   wholesale_bulk: "Wholesale & Bulk",
 },
+
+productsPage: {
+  promos: {
+    p1_title: "Wholesale • C-Store • Online",
+    p1_sub: "Best prices for diaspora",
+    p2_title: "Fast delivery",
+    p2_sub: "USA & Haiti",
+  },
+  diaspora: {
+    d1_title: "Diaspora Deals",
+    d1_sub: "Best value for the community",
+    d2_title: "Home Essentials",
+    d2_sub: "Kitchen • bedding • storage",
+    d3_title: "Electronics",
+    d3_sub: "Phones • gadgets • accessories",
+  },
+  shopSections: {
+    electronics: "Electronics",
+    home_kitchen: "Home Essentials",
+    beauty: "Beauty",
+    fashion: "Fashion",
+    grocery: "Grocery",
+  },
+}
+
 
   },
 
@@ -141,6 +167,30 @@ export const t = {
   services: "Services",
   wholesale_bulk: "Grossiste & Lots",
 },
+
+productsPage: {
+  promos: {
+    p1_title: "Grossiste • C-Store • En ligne",
+    p1_sub: "Meilleurs prix pour la diaspora",
+    p2_title: "Livraison rapide",
+    p2_sub: "USA & Haïti",
+  },
+  diaspora: {
+    d1_title: "Diaspora Deals",
+    d1_sub: "Meilleure valeur pour la communauté",
+    d2_title: "Essentiels Maison",
+    d2_sub: "Cuisine • literie • rangement",
+    d3_title: "Électronique",
+    d3_sub: "Téléphones • gadgets • accessoires",
+  },
+  shopSections: {
+    electronics: "Électronique",
+    home_kitchen: "Essentiels Maison",
+    beauty: "Beauté",
+    fashion: "Mode",
+    grocery: "Épicerie",
+  },
+}
 
   },
 
@@ -215,6 +265,31 @@ export const t = {
   wholesale_bulk: "Gwo Vann & An Gwo",
 },
 
+productsPage: {
+  promos: {
+    p1_title: "Gwo Vann • C-Store • Sou Entènèt",
+    p1_sub: "Pi bon pri pou diaspora",
+    p2_title: "Livrezon rapid",
+    p2_sub: "USA & Ayiti",
+  },
+  diaspora: {
+    d1_title: "Diaspora Deals",
+    d1_sub: "Pi bon valè pou kominote a",
+    d2_title: "Esansyèl Kay",
+    d2_sub: "Kwizin • kabann • depo",
+    d3_title: "Elektwonik",
+    d3_sub: "Telefòn • gadjèt • akseswa",
+  },
+  shopSections: {
+    electronics: "Elektwonik",
+    home_kitchen: "Esansyèl Kay",
+    beauty: "Bote",
+    fashion: "Mòd",
+    grocery: "Manje",
+  },
+}
+
+
   },
 
   es: {
@@ -285,6 +360,30 @@ export const t = {
   services: "Servicios",
   wholesale_bulk: "Mayorista y Volumen",
 },
+
+productsPage: {
+  promos: {
+    p1_title: "Mayorista • C-Store • Online",
+    p1_sub: "Mejores precios para la diáspora",
+    p2_title: "Entrega rápida",
+    p2_sub: "USA & Haití",
+  },
+  diaspora: {
+    d1_title: "Diaspora Deals",
+    d1_sub: "Mejor valor para la comunidad",
+    d2_title: "Esenciales del Hogar",
+    d2_sub: "Cocina • cama • almacenamiento",
+    d3_title: "Electrónica",
+    d3_sub: "Teléfonos • gadgets • accesorios",
+  },
+  shopSections: {
+    electronics: "Electrónica",
+    home_kitchen: "Esenciales del Hogar",
+    beauty: "Belleza",
+    fashion: "Moda",
+    grocery: "Comestibles",
+  },
+}
 
   },
 } as const;
