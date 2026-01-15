@@ -17,12 +17,12 @@ const floating = [
   },
   {
     img: "/images/listproduc/beauty.png",
-    size: "w-[472px] h-[472px] sm:w-[388px] sm:h-[388px] md:w-[410px] md:h-[410px]",
+    size: "w-[472px] h-[472px] sm:w-[388px] sm:h-[388px] md:w-[10px] md:h-[10px]",
     pos: "top-[-10px] sm:top-[-28px] md:top-[285px] right-[84%]",
   },
   {
     img: "/images/listproduc/fashion.png",
-    size: "w-[472px] h-[472px] sm:w-[288px] sm:h-[288px] md:w-[310px] md:h-[310px]",
+    size: "w-[472px] h-[472px] sm:w-[288px] sm:h-[288px] md:w-[10px] md:h-[10px]",
     pos: "right-[-5px] sm:right-[-5px] md:right-[122px] top-[55px] md:top-[370px]",
   },
   {
