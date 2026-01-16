@@ -14,7 +14,6 @@ type Props = {
   params: { lang: Lang };
 };
 
-const TOPBAR_BG = "bg-[#0b4fb3]"; // bleu type walmart
 const PAGE_BG = "bg-[#f3f6fb]";
 
 function formatMoney(p: Product) {
@@ -22,35 +21,25 @@ function formatMoney(p: Product) {
   return p.currency === "USD" ? `$${n}` : `${n} HTG`;
 }
 
-/** ✅ plus de cat.label : on lit depuis i18n.ts */
 function getCategoryLabel(key: CategoryKey, lang: Lang) {
   return t[lang]?.categories?.[key] ?? t.en.categories[key] ?? key;
 }
 
-/** ✅ ref sans null pour éviter checks partout */
-function scrollRow(
-  ref: React.RefObject<HTMLDivElement | null>,
-  dir: "left" | "right"
-) {
+function scrollRow(ref: React.RefObject<HTMLDivElement | null>, dir: "left" | "right") {
   const el = ref.current;
   if (!el) return;
-  const dx = dir === "left" ? -520 : 520;
-  el.scrollBy({ left: dx, behavior: "smooth" });
+  el.scrollBy({ left: dir === "left" ? -520 : 520, behavior: "smooth" });
 }
-
 
 export default function ProductsPage({ params }: Props) {
   const router = useRouter();
   const sp = useSearchParams();
   const lang = params.lang;
 
-  // region venant du query, sinon localStorage, sinon default
   const [region, setRegion] = useState<Region>("us");
   const [q, setQ] = useState("");
   const [activeCategory, setActiveCategory] = useState<CategoryKey>("deals");
 
-  // sliders refs
-  const catsRowRef = useRef<HTMLDivElement>(null);
   const dealsRowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -77,38 +66,24 @@ export default function ProductsPage({ params }: Props) {
 
   const products = useMemo(() => {
     const base = MOCK_PRODUCTS.filter((p) => p.region === region);
-
     const filteredByCat = base.filter((p) => p.category === activeCategory);
-    const filteredByQ = q.trim()
+
+    return q.trim()
       ? filteredByCat.filter((p) =>
           (p.title[lang] ?? p.title.en).toLowerCase().includes(q.toLowerCase())
         )
       : filteredByCat;
-
-    return filteredByQ;
   }, [region, activeCategory, q, lang]);
 
   const deals = useMemo(() => {
     return MOCK_PRODUCTS.filter((p) => p.region === region && p.category === "deals");
   }, [region]);
 
-  function goRegion(next: Region) {
-    setRegion(next);
-    if (typeof window !== "undefined") localStorage.setItem("MHANAC_REGION", next);
-
-    // ✅ force langue par region
-    const forcedLang: Lang = next === "us" ? "en" : "ht";
-
-    // ✅ garde la même catégorie active
-    router.push(`/${forcedLang}/products?region=${next}&category=${activeCategory}`);
-  }
-
   function goCategory(key: CategoryKey) {
     setActiveCategory(key);
     router.replace(`/${lang}/products?region=${region}&category=${key}`);
   }
 
-  // ✅ textes traduits via i18n
   const i = t[lang]?.productsPage ?? t.en.productsPage;
 
   const promoSlides = [
@@ -131,132 +106,10 @@ export default function ProductsPage({ params }: Props) {
   ];
 
   return (
-    <div className={`${PAGE_BG} min-h-screen`}>
-      {/* ===================== TOP BAR (bleu) ===================== */}
-      <header className={`${TOPBAR_BG} text-white sticky top-0 z-50`}>
-        <div className="mx-auto max-w-7xl px-3 sm:px-4 py-3 flex items-center gap-3">
-          {/* Logo left */}
-          <button
-            type="button"
-            onClick={() => router.push(`/${lang}/products?region=${region}&category=${activeCategory}`)}
-            className="flex items-center gap-2 min-w-[150px]"
-            aria-label="MHANAC Home"
-          >
-            <div className="relative w-[34px] h-[34px] rounded-lg overflow-hidden bg-white/15">
-              <Image
-                src="/images/mhanac%20logo1.png"
-                alt="MHANAC"
-                fill
-                className="object-contain p-1"
-                priority
-              />
-            </div>
-            <div className="font-black tracking-wide">MHANAC</div>
-          </button>
-
-          {/* Flags region */}
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => goRegion("us")}
-              className={[
-                "relative w-[44px] h-[28px] rounded-md overflow-hidden border",
-                region === "us" ? "border-green-400" : "border-white/30 hover:border-white/70",
-              ].join(" ")}
-              aria-label="USA"
-              title="USA"
-            >
-              <Image src="/images/usa.png" alt="USA" fill className="object-contain bg-white/10" />
-            </button>
-
-            <button
-              type="button"
-              onClick={() => goRegion("haiti")}
-              className={[
-                "relative w-[44px] h-[28px] rounded-md overflow-hidden border",
-                region === "haiti" ? "border-green-400" : "border-white/30 hover:border-white/70",
-              ].join(" ")}
-              aria-label="Haiti"
-              title="Haiti"
-            >
-              <Image src="/images/haiti.png" alt="Haiti" fill className="object-contain bg-white/10" />
-            </button>
-          </div>
-
-          {/* Search */}
-          <div className="flex-1 flex items-center gap-2 bg-white rounded-full px-3 py-2 shadow-sm">
-            <div className="relative w-5 h-5 opacity-70">
-              <Image src="/images/search.png" alt="search" fill className="object-contain" />
-            </div>
-            <input
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-              placeholder={lang === "ht" ? "Chèche yon pwodwi..." : lang === "fr" ? "Rechercher..." : "Search products..."}
-              className="flex-1 outline-none text-black bg-transparent text-sm"
-            />
-            <button
-              type="button"
-              className="bg-black text-white text-xs font-semibold px-4 py-2 rounded-full"
-            >
-              Go
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* ===================== CATEGORIES HORIZONTAL (gris) ===================== */}
-      <section className="bg-[#e9eef6] border-b border-black/5">
-        <div className="mx-auto max-w-7xl px-3 sm:px-4 py-3">
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => scrollRow(catsRowRef, "left")}
-              className="w-9 h-9 rounded-full bg-white shadow grid place-items-center hover:ring-2 hover:ring-green-400"
-              aria-label="Scroll left categories"
-            >
-              ‹
-            </button>
-
-            <div ref={catsRowRef} className="flex-1 overflow-x-auto scroll-smooth no-scrollbar">
-              <div className="flex gap-3 min-w-max">
-                {categories.map((c) => {
-                  const active = c.key === activeCategory;
-                  return (
-                    <button
-                      key={c.key}
-                      type="button"
-                      onClick={() => goCategory(c.key)}
-                      className={[
-                        "bg-white border border-black/10 rounded-xl px-4 py-2 flex items-center gap-2",
-                        "transition",
-                        active ? "ring-2 ring-green-400" : "hover:ring-2 hover:ring-green-300",
-                      ].join(" ")}
-                    >
-                      <span className="text-base">{c.icon ?? "🛍️"}</span>
-                      <span className="text-sm font-semibold text-slate-900 whitespace-nowrap">
-                        {getCategoryLabel(c.key, lang)}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => scrollRow(catsRowRef, "right")}
-              className="w-9 h-9 rounded-full bg-white shadow grid place-items-center hover:ring-2 hover:ring-green-400"
-              aria-label="Scroll right categories"
-            >
-              ›
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* ===================== MAIN GRID ===================== */}
-      <main className="mx-auto max-w-7xl px-3 sm:px-4 py-6">
-        {/* Top content: 2 promos left + diaspora right */}
+    <div className={`${PAGE_BG} min-h-screen w-full`}>
+      {/* ✅ MAIN prend toute la largeur, pas de max-w-7xl */}
+      <main className="w-full px-3 sm:px-6 py-6">
+        {/* promos + diaspora */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
           <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4">
             {promoSlides.map((s) => (
@@ -271,7 +124,6 @@ export default function ProductsPage({ params }: Props) {
                 <div className="relative p-5">
                   <div className="text-sm font-bold text-slate-900">{s.title}</div>
                   <div className="text-xs text-slate-600 mt-1">{s.subtitle}</div>
-
                   <button
                     type="button"
                     onClick={() => goCategory("deals")}
@@ -308,7 +160,7 @@ export default function ProductsPage({ params }: Props) {
           </div>
         </div>
 
-        {/* ===================== DEALS SLIDER ===================== */}
+        {/* Deals slider */}
         <section className="mt-8">
           <div className="flex items-center justify-between gap-3">
             <h2 className="text-lg font-black text-slate-900">{getCategoryLabel("deals", lang)}</h2>
@@ -318,7 +170,6 @@ export default function ProductsPage({ params }: Props) {
                 type="button"
                 onClick={() => scrollRow(dealsRowRef, "left")}
                 className="w-9 h-9 rounded-full bg-white shadow grid place-items-center hover:ring-2 hover:ring-green-400"
-                aria-label="Deals left"
               >
                 ‹
               </button>
@@ -326,7 +177,6 @@ export default function ProductsPage({ params }: Props) {
                 type="button"
                 onClick={() => scrollRow(dealsRowRef, "right")}
                 className="w-9 h-9 rounded-full bg-white shadow grid place-items-center hover:ring-2 hover:ring-green-400"
-                aria-label="Deals right"
               >
                 ›
               </button>
@@ -336,10 +186,7 @@ export default function ProductsPage({ params }: Props) {
           <div ref={dealsRowRef} className="mt-3 overflow-x-auto scroll-smooth no-scrollbar">
             <div className="flex gap-4 min-w-max pb-2">
               {deals.map((p) => (
-                <div
-                  key={p.id}
-                  className="w-[220px] rounded-2xl bg-white border border-black/10 shadow-sm overflow-hidden"
-                >
+                <div key={p.id} className="w-[220px] rounded-2xl bg-white border border-black/10 shadow-sm overflow-hidden">
                   <div className="relative h-[160px] bg-slate-50">
                     <Image src={p.image ?? "/images/front.png"} alt="deal" fill className="object-contain p-4" />
                   </div>
@@ -362,59 +209,7 @@ export default function ProductsPage({ params }: Props) {
           </div>
         </section>
 
-        {/* ===================== CATEGORY “SHOP SECTIONS” ===================== */}
-        <section className="mt-10">
-          <h3 className="text-lg font-black text-slate-900">
-            {lang === "fr" ? "Catégories populaires" : lang === "ht" ? "Kategori popilè" : "Popular categories"}
-          </h3>
-
-          <div className="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {shopSections.map((s) => {
-              const best = MOCK_PRODUCTS.filter((p) => p.region === region && p.category === s.key).slice(0, 4);
-
-              return (
-                <div key={s.key} className="rounded-2xl bg-white border border-black/10 shadow-sm overflow-hidden">
-                  <div className="p-4 flex items-center justify-between">
-                    <div>
-                      <div className="text-sm font-black text-slate-900">{s.title}</div>
-                      <div className="text-xs text-slate-600">Top sellers</div>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => goCategory(s.key)}
-                      className="bg-[#0b4fb3] text-white text-xs font-semibold px-4 py-2 rounded-full"
-                    >
-                      Shop
-                    </button>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-3 px-4 pb-4">
-                    {best.map((p) => (
-                      <button
-                        key={p.id}
-                        type="button"
-                        onClick={() => goCategory(s.key)}
-                        className="text-left rounded-xl border border-black/10 hover:ring-2 hover:ring-green-300 transition overflow-hidden"
-                      >
-                        <div className="relative h-[110px] bg-slate-50">
-                          <Image src={p.image ?? s.image} alt="prod" fill className="object-contain p-3" />
-                        </div>
-                        <div className="p-3">
-                          <div className="text-xs font-semibold text-slate-900 line-clamp-2">
-                            {p.title[lang] ?? p.title.en}
-                          </div>
-                          <div className="mt-1 text-xs font-black text-slate-900">{formatMoney(p)}</div>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* ===================== PRODUCTS GRID ===================== */}
+        {/* Products grid */}
         <section className="mt-10">
           <div className="flex items-end justify-between gap-3">
             <div>
@@ -427,7 +222,7 @@ export default function ProductsPage({ params }: Props) {
             </div>
           </div>
 
-          <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {products.map((p) => (
               <div key={p.id} className="rounded-2xl bg-white border border-black/10 shadow-sm overflow-hidden">
                 <div className="relative h-[150px] bg-slate-50">
@@ -450,17 +245,6 @@ export default function ProductsPage({ params }: Props) {
           </div>
         </section>
       </main>
-
-      {/* ===================== FOOTER ===================== */}
-      <footer className="mt-12">
-        <div className="h-10 bg-gradient-to-b from-[#e9eef6] to-white" />
-        <div className="bg-white border-t border-black/5">
-          <div className="mx-auto max-w-7xl px-4 py-8 text-sm text-slate-600">
-            <div className="font-black text-slate-900">MHANAC</div>
-            <div className="mt-2">Wholesale • C-Store • Online — USA & Haiti</div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
