@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import Navbar from "./components/Navbar";
 import type { Lang } from "./lib/i18n";
+import Footer from "./components/Footer";
 
 export default function LangLayout({
   children,
@@ -12,7 +13,10 @@ export default function LangLayout({
   return (
     <>
       <Navbar lang={params.lang} />
+
       {children}
+
+      <Footer lang={params.lang} />
     </>
   );
 }

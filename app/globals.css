@@ -8,7 +8,7 @@ body {
 }
 
 :root {
-  --background: #ffffff;
+  --background:#E0FFDE;
   --foreground: #171717;
 
   --font-sans: var(--font-geist-sans);
@@ -21,7 +21,7 @@ body {
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground: #E0FFDE;
   }
 }
 

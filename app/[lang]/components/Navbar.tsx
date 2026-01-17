@@ -26,6 +26,11 @@ function forceLang(region: Region): Lang {
   return region === "us" ? "en" : "ht";
 }
 
+/** ✅ retire le prefix /en /ht /fr /es du pathname */
+function stripLangPrefix(pathname: string) {
+  return pathname.replace(/^\/(en|ht|fr|es)(?=\/|$)/, "") || "/";
+}
+
 function CartIcon({ className = "" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -44,41 +49,58 @@ function CartIcon({ className = "" }: { className?: string }) {
 
 export default function Navbar({ lang }: { lang: Lang }) {
   const router = useRouter();
-  const pathname = usePathname();
-  const sp = useSearchParams();
+  const pathname = usePathname(); // ex: /en/products
+  const sp = useSearchParams(); // region, category, q...
 
   const [region, setRegion] = useState<Region>("us");
   const [activeCategory, setActiveCategory] = useState<CategoryKey>("deals");
 
+  // Init region + activeCategory
   useEffect(() => {
     const fromUrl = sp.get("region");
-    const fromLS =
-      typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null;
+    const fromLS = typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null;
 
-    const r =
-      (isRegion(fromUrl) && fromUrl) || (isRegion(fromLS) && fromLS) || "us";
+    const r: Region =
+      (isRegion(fromUrl) && fromUrl) || (isRegion(fromLS) && fromLS) || (lang === "en" ? "us" : "haiti");
 
     setRegion(r);
     if (typeof window !== "undefined") localStorage.setItem(STORAGE_KEY, r);
-  }, [sp]);
+
+    const cat = (sp.get("category") as CategoryKey | null) ?? "deals";
+    setActiveCategory(cat);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const categories = useMemo(() => categoriesByRegion(region), [region]);
 
+  /** ✅ même logique que ProductsPage:
+   *  - change region
+   *  - force /en si US, /ht si Haiti
+   *  - garde query params (region, category, q, etc.)
+   *  - garde la page actuelle (/products, /about, etc.)
+   */
   function goRegion(next: Region) {
     setRegion(next);
     if (typeof window !== "undefined") localStorage.setItem(STORAGE_KEY, next);
 
     const nextLang = forceLang(next);
+    const restPath = stripLangPrefix(pathname); // ex: "/products" ou "/"
     const params = new URLSearchParams(sp.toString());
-    params.set("region", next);
 
-    router.push(`/${nextLang}${pathname.replace(/^\/(en|fr|ht|es)/, "")}?${params.toString()}`);
+    // force region + conserve category
+    params.set("region", next);
+    if (!params.get("category")) params.set("category", activeCategory);
+
+    router.push(`/${nextLang}${restPath}?${params.toString()}`);
   }
 
   function goCategory(key: CategoryKey) {
     setActiveCategory(key);
     const params = new URLSearchParams(sp.toString());
+    params.set("region", region);
     params.set("category", key);
+
+    // ✅ reste sur la même page, sans changer la langue
     router.replace(`${pathname}?${params.toString()}`);
   }
 
@@ -88,49 +110,39 @@ export default function Navbar({ lang }: { lang: Lang }) {
 
   return (
     <header className={`${BLUE_BG} text-white w-full sticky top-0 z-50`}>
-      {/* ===== TOP “GLASS LOOP BAR” (comme ton screenshot) ===== */}
+      {/* ===== TOP “GLASS LOOP BAR” ===== */}
       <div className="w-full px-3 sm:px-6 py-3">
-        <div
-          className={[
-            GLASS_BAR,
-            "w-full rounded-md px-3 sm:px-4 py-2",
-            "flex items-center gap-3",
-          ].join(" ")}
-        >
+        <div className={[GLASS_BAR, "w-full rounded-md px-3 sm:px-4 py-2", "flex items-center gap-3"].join(" ")}>
           {/* Logo + Name */}
           <button
-            onClick={() => router.push(`/${lang}?region=${region}`)}
+            onClick={() => {
+              const params = new URLSearchParams(sp.toString());
+              params.set("region", region);
+              if (!params.get("category")) params.set("category", activeCategory);
+              router.push(`/${lang}/products?${params.toString()}`);
+            }}
             className="flex items-center gap-2 min-w-[110px]"
             aria-label="MHANAC Home"
           >
             <div className="relative w-8 h-8 rounded-md bg-white/10 overflow-hidden">
-              <Image
-                src="/images/mhanac%20logo1.png"
-                alt="MHANAC"
-                fill
-                className="object-contain p-1"
-                priority
-              />
+              <Image src="/images/mhanac%20logo1.png" alt="MHANAC" fill className="object-contain p-1" priority />
             </div>
             <span className="font-semibold text-sm sm:text-base">Mhanac</span>
           </button>
 
-          {/* Lang small (optionnel, comme screenshot “En”) */}
+          {/* Lang */}
           <div className="hidden sm:flex items-center gap-1 text-white/80 text-sm">
             <span className="uppercase">{lang}</span>
             <span className="opacity-60">▾</span>
           </div>
 
-          {/* Search */}
+          {/* Search (UI only) */}
           <div className="flex-1 flex items-center gap-2">
             <input
               placeholder="Search"
               className="h-9 w-full max-w-[420px] rounded-sm px-3 text-sm text-black outline-none bg-white"
             />
-            <button
-              className="h-9 px-4 rounded-sm bg-white text-black text-sm font-semibold"
-              type="button"
-            >
+            <button className="h-9 px-4 rounded-sm bg-white text-black text-sm font-semibold" type="button">
               Submit
             </button>
           </div>
@@ -142,9 +154,7 @@ export default function Navbar({ lang }: { lang: Lang }) {
               onClick={() => goRegion("us")}
               className={[
                 "rounded-sm p-1 border transition",
-                region === "us"
-                  ? "border-green-400 bg-white"
-                  : "border-white/20 bg-white/10 hover:bg-white/15",
+                region === "us" ? "border-green-400 bg-white" : "border-white/20 bg-white/10 hover:bg-white/15",
               ].join(" ")}
               aria-label="USA"
               title="USA"
@@ -157,9 +167,7 @@ export default function Navbar({ lang }: { lang: Lang }) {
               onClick={() => goRegion("haiti")}
               className={[
                 "rounded-sm p-1 border transition",
-                region === "haiti"
-                  ? "border-green-400 bg-white"
-                  : "border-white/20 bg-white/10 hover:bg-white/15",
+                region === "haiti" ? "border-green-400 bg-white" : "border-white/20 bg-white/10 hover:bg-white/15",
               ].join(" ")}
               aria-label="Haiti"
               title="Haiti"
@@ -181,17 +189,14 @@ export default function Navbar({ lang }: { lang: Lang }) {
             </span>
           </button>
 
-          {/* Login (comme screenshot à droite) */}
-          <button
-            type="button"
-            className="ml-1 px-3 py-2 rounded-sm bg-transparent hover:bg-white/10 transition text-sm font-semibold"
-          >
+          {/* Login */}
+          <button type="button" className="ml-1 px-3 py-2 rounded-sm bg-transparent hover:bg-white/10 transition text-sm font-semibold">
             Login <span className="opacity-70">▾</span>
           </button>
         </div>
       </div>
 
-      {/* ===== CATEGORY LINE (style screenshot) ===== */}
+      {/* ===== CATEGORY LINE ===== */}
       <div className="w-full bg-white">
         <div className="w-full px-3 sm:px-6">
           <div className="flex items-center gap-3 overflow-x-auto no-scrollbar py-3">
@@ -210,15 +215,11 @@ export default function Navbar({ lang }: { lang: Lang }) {
                     "hover:text-green-600",
                   ].join(" ")}
                 >
-                  {/* zoom effect */}
                   <span className="inline-flex items-center gap-2 transform transition-transform duration-200 group-hover:scale-110">
                     <span className="text-base">{c.icon ?? "•"}</span>
-                    <span className="text-sm capitalize">
-                      {label(c.key)}
-                    </span>
+                    <span className="text-sm capitalize">{label(c.key)}</span>
                   </span>
 
-                  {/* underline glow */}
                   <span
                     className={[
                       "absolute left-3 right-3 -bottom-1 h-[2px] rounded-full",
@@ -232,7 +233,6 @@ export default function Navbar({ lang }: { lang: Lang }) {
           </div>
         </div>
 
-        {/* grey line like screenshot */}
         <div className="h-[4px] bg-black/50" />
       </div>
     </header>
