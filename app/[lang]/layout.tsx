@@ -3,27 +3,29 @@ import Navbar from "./components/Navbar";
 import type { Lang } from "./lib/i18n";
 import Footer from "./components/Footer";
 
-// 1. On définit l'interface pour correspondre aux attentes de Next.js
-// Les params sont une Promise
+// On définit les params tels que Next.js les envoie (string)
 interface LayoutProps {
   children: ReactNode;
-  params: Promise<{ lang: Lang }>;
+  params: Promise<{ lang: string }>; 
 }
 
-// 2. On rend la fonction 'async'
 export default async function LangLayout({
   children,
   params,
 }: LayoutProps) {
   
-  // 3. On "await" les params avant de les utiliser
+  // On récupère le paramètre
   const { lang } = await params;
+
+  // On force le type vers votre union 'Lang' ("en" | "fr" | etc.)
+  // car vous avez probablement un middleware qui filtre déjà les langues valides.
+  const currentLang = lang as Lang;
 
   return (
     <>
-      <Navbar lang={lang} />
+      <Navbar lang={currentLang} />
       {children}
-      <Footer lang={lang} />
+      <Footer lang={currentLang} />
     </>
   );
 }

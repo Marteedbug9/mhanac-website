@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState, use } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { t, type Lang } from "../lib/i18n";
@@ -10,8 +10,10 @@ import { categoriesByRegion } from "../lib/catalog/categories";
 import type { Product } from "../lib/catalog/products";
 import { MOCK_PRODUCTS } from "../lib/catalog/products";
 
+
+
 type Props = {
-  params: { lang: Lang };
+  params: Promise<{ lang: string }>; 
 };
 
 const PAGE_BG = "bg-[#E4FCE3]";
@@ -255,14 +257,19 @@ function AdsCarousel({
 }
 
 export default function ProductsPage({ params }: Props) {
+  // 1. On déballe les params avec le hook use()
+  const resolvedParams = React.use(params); 
+  
+  // 2. Maintenant on peut extraire 'lang'
+  const lang = (resolvedParams.lang as Lang) || "en";
+
   const router = useRouter();
   const sp = useSearchParams();
-  const lang = params.lang;
 
+  // Les states
   const [region, setRegion] = useState<Region>("us");
   const [q, setQ] = useState("");
   const [activeCategory, setActiveCategory] = useState<CategoryKey>("deals");
-
   // sliders refs
   const dealsRowRef = useRef<HTMLDivElement>(null);
   const wholesaleRowRef = useRef<HTMLDivElement>(null);
