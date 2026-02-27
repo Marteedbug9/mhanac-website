@@ -7,7 +7,13 @@ import { useRouter } from "next/navigation";
 type Region = "us" | "haiti";
 const STORAGE_KEY = "MHANAC_REGION";
 
-/** Responsive flags height */
+/**
+ * ✅ Responsive flags height:
+ * - xs: 140
+ * - sm: 180
+ * - md: 210
+ * - lg: 230
+ */
 const FLAG_BOX_H = "h-[140px] sm:h-[180px] md:h-[210px] lg:h-[230px]";
 const FLAG_PADDING = "p-4 sm:p-6";
 
@@ -23,56 +29,59 @@ const floatItems: FloatItem[] = [
     img: "/images/listproduc/electro.png",
     alt: "electronics",
     className:
+      // hidden on very small screens, appears from sm+
       "hidden sm:block " +
-      "w-[clamp(150px,18vw,280px)] h-[clamp(150px,18vw,280px)] " +
-      "left-[-6%] sm:left-[-4%] lg:left-[-3%] bottom-[-10%] lg:bottom-[-14%] " +
-      "opacity-35 blur-[0.5px]",
+      // size using clamp (works across screens)
+      "w-[clamp(160px,18vw,280px)] h-[clamp(160px,18vw,280px)] " +
+      // position: bottom-left zone, safe distances
+      "left-[-6%] sm:left-[-4%] lg:left-[-3%] bottom-[-8%] sm:bottom-[-10%] lg:bottom-[-14%] " +
+      "opacity-90",
   },
   {
     img: "/images/listproduc/beauty.png",
     alt: "beauty",
     className:
       "hidden md:block " +
-      "w-[clamp(160px,19vw,320px)] h-[clamp(160px,19vw,320px)] " +
-      "left-[-8%] md:left-[-6%] lg:left-[-5%] top-[18%] lg:top-[26%] " +
-      "opacity-30 blur-[0.8px]",
+      "w-[clamp(170px,20vw,320px)] h-[clamp(170px,20vw,320px)] " +
+      "left-[-8%] md:left-[-6%] lg:left-[-5%] top-[18%] md:top-[22%] lg:top-[26%] " +
+      "opacity-85",
   },
   {
     img: "/images/listproduc/fashion.png",
     alt: "fashion",
     className:
       "hidden sm:block " +
-      "w-[clamp(140px,18vw,300px)] h-[clamp(140px,18vw,300px)] " +
-      "right-[-6%] sm:right-[-4%] lg:right-[-3%] top-[10%] md:top-[14%] " +
-      "opacity-32 blur-[0.7px]",
+      "w-[clamp(150px,18vw,300px)] h-[clamp(150px,18vw,300px)] " +
+      "right-[-5%] sm:right-[-4%] lg:right-[-3%] top-[10%] sm:top-[12%] md:top-[14%] " +
+      "opacity-90",
   },
   {
     img: "/images/listproduc/home.png",
     alt: "home",
     className:
       "hidden lg:block " +
-      "w-[clamp(220px,26vw,430px)] h-[clamp(220px,26vw,430px)] " +
-      "right-[-16%] xl:right-[-12%] 2xl:right-[-10%] bottom-[-18%] xl:bottom-[-16%] " +
-      "opacity-25 blur-[1px]",
+      "w-[clamp(220px,26vw,420px)] h-[clamp(220px,26vw,420px)] " +
+      "right-[-14%] xl:right-[-10%] 2xl:right-[-8%] bottom-[-18%] xl:bottom-[-16%] " +
+      "opacity-75",
   },
   {
     img: "/images/listproduc/groce1.png",
     alt: "grocery",
     className:
       "hidden md:block " +
-      "w-[clamp(150px,18vw,300px)] h-[clamp(150px,18vw,300px)] " +
-      "left-[32%] md:left-[36%] lg:left-[38%] top-[-12%] lg:top-[-14%] " +
-      "opacity-25 blur-[1px]",
+      "w-[clamp(160px,18vw,300px)] h-[clamp(160px,18vw,300px)] " +
+      "left-[30%] md:left-[34%] lg:left-[36%] top-[-10%] md:top-[-12%] lg:top-[-14%] " +
+      "opacity-80",
   },
   {
     img: "/images/mhanac logo1.png",
     alt: "mhanac logo",
     className:
-      // visible even on mobile but small and faint
+      // show small on mobile, larger on desktop
       "block " +
-      "w-[clamp(70px,10vw,200px)] h-[clamp(70px,10vw,200px)] " +
-      "left-[2%] top-[-8%] sm:top-[-10%] md:top-[-12%] " +
-      "opacity-30 blur-[0.6px]",
+      "w-[clamp(90px,12vw,210px)] h-[clamp(90px,12vw,210px)] " +
+      "left-[0%] sm:left-[2%] top-[-10%] sm:top-[-12%] md:top-[-14%] " +
+      "opacity-90",
     priority: true,
   },
 ];
@@ -112,7 +121,7 @@ export default function RegionGate() {
   return (
     <main className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 py-10 sm:py-16 text-white overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0 -z-30">
+      <div className="absolute inset-0 -z-20">
         <Image
           src="/images/front.png"
           alt="Background"
@@ -127,39 +136,38 @@ export default function RegionGate() {
       {/* Big background text */}
       <div
         aria-hidden
-        className="fixed inset-0 -z-20 grid place-items-center opacity-[0.10] pointer-events-none select-none text-center px-6"
+        className="fixed inset-0 -z-10 grid place-items-center opacity-[0.10] pointer-events-none select-none text-center px-6"
       >
         <div className="text-[clamp(26px,4vw,64px)] font-black tracking-wide leading-tight">
           {phrases[i].text}
         </div>
       </div>
 
-      {/* ✅ Float layer behind content */}
-      <div className="absolute inset-0 -z-10 pointer-events-none">
-        {/* Optional: soft vignette to keep center readable on any screen */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0)_0%,rgba(0,0,0,0.25)_55%,rgba(0,0,0,0.45)_100%)]" />
+      <div className="relative w-full max-w-5xl">
+        {/* Floating images (responsive, safe) */}
+        <div className="pointer-events-none absolute inset-0">
+          {floatItems.map((c, idx) => (
+            <div
+              key={idx}
+              className={[
+                "absolute z-20 grid place-items-center rounded-2xl",
+                c.className,
+              ].join(" ")}
+            >
+              <Image
+                src={c.img}
+                alt={c.alt}
+                width={600}
+                height={600}
+                priority={c.priority}
+                className="object-contain drop-shadow-[0_18px_55px_rgba(0,0,0,0.45)]"
+              />
+            </div>
+          ))}
+        </div>
 
-        {floatItems.map((c, idx) => (
-          <div
-            key={idx}
-            className={["absolute z-0 grid place-items-center", c.className].join(" ")}
-          >
-            <Image
-              src={c.img}
-              alt={c.alt}
-              width={700}
-              height={700}
-              priority={c.priority}
-              className="object-contain"
-            />
-          </div>
-        ))}
-      </div>
-
-      {/* Content */}
-      <div className="relative w-full max-w-5xl z-20">
-        {/* card */}
-        <div className="relative rounded-3xl border border-white/15 bg-white/10 backdrop-blur-xl p-5 sm:p-6 md:p-10 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
+        {/* Card */}
+        <div className="relative z-10 rounded-3xl border border-white/15 bg-white/10 backdrop-blur-xl p-5 sm:p-6 md:p-10 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
           <div className="flex items-center justify-between gap-3 flex-wrap">
             <div className="font-black tracking-wide">MHANAC</div>
           </div>
@@ -174,7 +182,6 @@ export default function RegionGate() {
 
           {/* Flags */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 mt-7">
-            {/* USA */}
             <button
               type="button"
               onClick={() => choose("us")}
@@ -191,7 +198,6 @@ export default function RegionGate() {
               />
             </button>
 
-            {/* Haiti */}
             <button
               type="button"
               onClick={() => choose("haiti")}
