@@ -83,7 +83,7 @@ export default function RegionGate() {
       {/* Content */}
       <div className="relative z-10 w-full max-w-xl px-6 text-center">
         <div className="mb-4 flex justify-center">
-          <Image src="/images/mhanac logo1.png" alt="Logo" width={120} height={120} className="object-contain" />
+          <Image src="/images/mhanac.png" alt="Logo" width={120} height={120} className="object-contain" />
         </div>
 
         <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mb-8 transition-opacity duration-500">
@@ -107,7 +107,7 @@ export default function RegionGate() {
           {/* HAITI */}
           <button
             onClick={() => selectRegion("haiti")}
-            className={`group relative ${FLAG_BOX_H} rounded-3xl bg-white border-2 border-transparent hover:border-red-500 transition-all shadow-xl overflow-hidden`}
+            className={`group relative ${FLAG_BOX_H} rounded-3xl  border-transparent hover:border-red-500 transition-all shadow-xl overflow-hidden`}
           >
             <div className={`absolute inset-0 ${FLAG_PADDING} flex flex-col items-center justify-center`}>
                <div className="relative w-full h-full mb-2">
