@@ -75,7 +75,7 @@ export default function RegionGate() {
       <div className="absolute inset-0 pointer-events-none">
         {categories.map((c, idx) => (
           <div key={idx} className={`absolute ${c.pos} ${c.size} opacity-20`}>
-            <Image src={c.img} alt="" fill className="object-contain" />
+            <Image src="/images/front.png" alt="frontbackgroung" fill className="object-contain" />
           </div>
         ))}
       </div>
@@ -94,7 +94,7 @@ export default function RegionGate() {
           {/* USA */}
           <button
             onClick={() => selectRegion("us")}
-            className={`group relative ${FLAG_BOX_H} rounded-3xl bg-white border-2 border-transparent hover:border-blue-500 transition-all shadow-xl overflow-hidden`}
+            className={`group relative ${FLAG_BOX_H}  hover:border-blue-500 transition-all shadow-xl overflow-hidden`}
           >
             <div className={`absolute inset-0 ${FLAG_PADDING} flex flex-col items-center justify-center`}>
                <div className="relative w-full h-full mb-2">
@@ -107,7 +107,7 @@ export default function RegionGate() {
           {/* HAITI */}
           <button
             onClick={() => selectRegion("haiti")}
-            className={`group relative ${FLAG_BOX_H} rounded-3xl  border-transparent hover:border-red-500 transition-all shadow-xl overflow-hidden`}
+            className={`group relative ${FLAG_BOX_H}  hover:border-red-500 transition-all shadow-xl overflow-hidden`}
           >
             <div className={`absolute inset-0 ${FLAG_PADDING} flex flex-col items-center justify-center`}>
                <div className="relative w-full h-full mb-2">
