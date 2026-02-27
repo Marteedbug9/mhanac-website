@@ -3,20 +3,27 @@ import Navbar from "./components/Navbar";
 import type { Lang } from "./lib/i18n";
 import Footer from "./components/Footer";
 
-export default function LangLayout({
+// 1. On définit l'interface pour correspondre aux attentes de Next.js
+// Les params sont une Promise
+interface LayoutProps {
+  children: ReactNode;
+  params: Promise<{ lang: Lang }>;
+}
+
+// 2. On rend la fonction 'async'
+export default async function LangLayout({
   children,
   params,
-}: {
-  children: ReactNode;
-  params: { lang: Lang };
-}) {
+}: LayoutProps) {
+  
+  // 3. On "await" les params avant de les utiliser
+  const { lang } = await params;
+
   return (
     <>
-      <Navbar lang={params.lang} />
-
+      <Navbar lang={lang} />
       {children}
-
-      <Footer lang={params.lang} />
+      <Footer lang={lang} />
     </>
   );
 }
