@@ -46,7 +46,6 @@ const categories = [
 
 export default function RegionGate() {
   const router = useRouter();
-  const [i, setI] = useState(0);
 
   const phrases = useMemo(
     () => [
@@ -58,66 +57,104 @@ export default function RegionGate() {
     []
   );
 
+  const [i, setI] = useState(0);
+  const [selected, setSelected] = useState<Region | null>(null);
+
   useEffect(() => {
-    const timer = setInterval(() => setI((p) => (p + 1) % phrases.length), 2500);
+    const timer = setInterval(() => setI((p) => (p + 1) % phrases.length), 1800);
     return () => clearInterval(timer);
   }, [phrases.length]);
 
-  const selectRegion = (r: Region) => {
-    localStorage.setItem(STORAGE_KEY, r);
-    const lang = r === "us" ? "en" : "ht";
-    router.push(`/${lang}/products?region=${r}`);
-  };
+  function choose(region: Region) {
+    setSelected(region);
+
+    // ✅ save region
+    if (typeof window !== "undefined") {
+      localStorage.setItem(STORAGE_KEY, region);
+    }
+
+    // ✅ force language by region
+    const lang = region === "us" ? "en" : "ht";
+
+    // ✅ include region in query (important)
+    router.push(`/${lang}/products?region=${region}&category=deals`);
+  }
 
   return (
-    <div className="relative min-h-screen w-full bg-[#E4FCE3] overflow-hidden flex flex-col items-center justify-center font-sans">
-      {/* Background Images */}
-      <div className="absolute inset-0 pointer-events-none">
-        {categories.map((c, idx) => (
-          <div key={idx} className={`absolute ${c.pos} ${c.size} opacity-20`}>
-            <Image src="/images/front.png" alt="frontbackgroung" fill className="object-contain" />
-          </div>
-        ))}
+    <main className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 py-10 sm:py-16 text-white">
+      {/* Background */}
+      <div className="absolute inset-0 -z-20">
+        <Image src="/images/front.png" alt="Background" fill priority className="object-cover" sizes="100vw" />
+        <div className="absolute inset-0 bg-black/45" />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 w-full max-w-xl px-6 text-center">
-        <div className="mb-4 flex justify-center">
-          <Image src="/images/mhanac.png" alt="Logo" width={120} height={120} className="object-contain" />
-        </div>
-
-        <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mb-8 transition-opacity duration-500">
+      {/* Background big text */}
+      <div aria-hidden className="fixed inset-0 -z-10 grid place-items-center opacity-[0.10] pointer-events-none select-none text-center px-6">
+        <div className="text-[34px] sm:text-[42px] md:text-[64px] font-black tracking-wide leading-tight">
           {phrases[i].text}
-        </h1>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {/* USA */}
-          <button
-            onClick={() => selectRegion("us")}
-            className={`group relative ${FLAG_BOX_H}  hover:border-blue-500 transition-all shadow-xl overflow-hidden`}
-          >
-            <div className={`absolute inset-0 ${FLAG_PADDING} flex flex-col items-center justify-center`}>
-               <div className="relative w-full h-full mb-2">
-                 <Image src="/images/usa.png" alt="USA" fill className="object-contain group-hover:scale-105 transition" />
-               </div>
-               <span className="font-bold text-slate-800">UNITED STATES</span>
-            </div>
-          </button>
-
-          {/* HAITI */}
-          <button
-            onClick={() => selectRegion("haiti")}
-            className={`group relative ${FLAG_BOX_H}  hover:border-red-500 transition-all shadow-xl overflow-hidden`}
-          >
-            <div className={`absolute inset-0 ${FLAG_PADDING} flex flex-col items-center justify-center`}>
-               <div className="relative w-full h-full mb-2">
-                 <Image src="/images/haiti.png" alt="Haiti" fill className="object-contain group-hover:scale-105 transition" />
-               </div>
-               <span className="font-bold text-slate-800">HAÏTI</span>
-            </div>
-          </button>
         </div>
       </div>
-    </div>
+
+      <div className="relative w-full max-w-5xl">
+        {/* floating images */}
+        <div className="pointer-events-none">
+          {categories.map((c, idx) => (
+            <div key={idx} className={["absolute z-20", c.pos, c.size, "grid place-items-center rounded-2xl"].join(" ")}>
+              <Image src={c.img} alt="category" width={580} height={580} className="object-contain" />
+            </div>
+          ))}
+        </div>
+
+        {/* card */}
+        <div className="relative z-10 rounded-3xl border border-white/15 bg-white/10 backdrop-blur-xl p-5 sm:p-6 md:p-10 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
+          <div className="flex justify-between gap-3 flex-wrap">
+            <div className="font-black tracking-wide">MHANAC</div>
+          </div>
+
+          <h1 className="mt-4 text-2xl sm:text-3xl md:text-5xl font-semibold leading-tight">{phrases[i].text}</h1>
+
+          <p className="mt-2 text-white/85 text-sm sm:text-base">
+            {selected === "haiti" ? "Chwazi peyi ou pou kontinye." : "Select your country to continue."}
+          </p>
+
+          {/* Flags */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-7">
+            {/* USA */}
+            <button
+              type="button"
+              onClick={() => choose("us")}
+              aria-label="Choose USA"
+              className={["relative group transition", FLAG_BOX_H].join(" ")}
+            >
+              <Image
+                src="/images/usa.png"
+                alt="USA"
+                fill
+                priority
+                className={["object-contain", FLAG_PADDING, "transition-transform duration-300 group-hover:scale-[1.08]"].join(" ")}
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </button>
+
+            {/* Haiti */}
+            <button
+              type="button"
+              onClick={() => choose("haiti")}
+              aria-label="Choose Haiti"
+              className={["relative group transition", FLAG_BOX_H].join(" ")}
+            >
+              <Image
+                src="/images/haiti.png"
+                alt="Haiti"
+                fill
+                priority
+                className={["object-contain", FLAG_PADDING, "transition-transform duration-300 group-hover:scale-[1.08]"].join(" ")}
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
   );
 }
