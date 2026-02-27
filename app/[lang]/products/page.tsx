@@ -14,7 +14,7 @@ type Props = {
   params: { lang: Lang };
 };
 
-const PAGE_BG = "bg-[#f3f6fb]";
+const PAGE_BG = "bg-[#E4FCE3]";
 const STORAGE_KEY = "MHANAC_REGION";
 
 /* =========================================================
@@ -22,7 +22,7 @@ const STORAGE_KEY = "MHANAC_REGION";
    ---------------------------------------------------------
    COLORS / GRID
 ========================================================= */
-const TILE_GREEN = "bg-[#C7FFD8]";
+const TILE_GREEN = "bg-[#E1EDDD]";
 const TILE_WHITE = "bg-white";
 
 /* =========================================================
@@ -199,10 +199,10 @@ function AdsCarousel({
   };
 
   return (
-    <div className="rounded-2xl border border-black/10 shadow-sm overflow-hidden bg-white">
+    <div className="rounded-2xl">
       <div className="p-4 flex items-center justify-between">
         <div className="text-sm font-black text-slate-900">Publicité</div>
-        <div className="text-xs text-slate-600">Diaporama (3)</div>
+        <div className="text-xs text-slate-600"></div>
       </div>
 
       <div className="relative h-[220px] sm:h-[260px] md:h-[300px] bg-slate-50">
@@ -221,7 +221,7 @@ function AdsCarousel({
         <button
           type="button"
           onClick={() => go(idx - 1)}
-          className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 grid place-items-center shadow hover:scale-105 transition"
+          className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/90 grid place-items-center shadow hover:scale-105 transition"
           aria-label="Prev"
         >
           ‹
@@ -229,7 +229,7 @@ function AdsCarousel({
         <button
           type="button"
           onClick={() => go(idx + 1)}
-          className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 grid place-items-center shadow hover:scale-105 transition"
+          className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/90 grid place-items-center shadow hover:scale-105 transition"
           aria-label="Next"
         >
           ›
@@ -426,6 +426,20 @@ export default function ProductsPage({ params }: Props) {
   return (
     <div className={`${PAGE_BG} min-h-screen w-full`}>
       <main className="w-full px-3 sm:px-4 py-5">
+
+         <section className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <AutoMarqueeRow
+            items={listA}
+            direction="left"
+            durationSec={MARQUEE_DURATION_SLOW}
+          />
+          <AutoMarqueeRow
+            items={listB}
+            direction="right"
+            durationSec={MARQUEE_DURATION_FAST}
+          />
+        </section>
+
         {/* promos + diaspora */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
           <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -455,7 +469,7 @@ export default function ProductsPage({ params }: Props) {
                     onClick={() => goCategory("deals")}
                     className="mt-4 inline-flex items-center gap-2 bg-[#0b4fb3] text-white text-xs font-semibold px-4 py-2 rounded-full hover:opacity-95"
                   >
-                    Shop <span>›</span>
+                    Shoop <span>›</span>
                   </button>
                 </div>
               </div>
@@ -497,6 +511,12 @@ export default function ProductsPage({ params }: Props) {
             ))}
           </div>
         </div>
+             {/* =========================================================
+            ✅ NEW: Ads carousel (3 images)
+        ========================================================= */}
+        <section className="mt-8">
+          <AdsCarousel slides={adsSlides} />
+        </section>
 
         {/* ✅ NEW BLOCK: WHOLESALE (left) + 2x3 categories (right) */}
         <section className="mt-6">

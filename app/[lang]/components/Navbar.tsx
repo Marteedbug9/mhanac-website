@@ -154,7 +154,7 @@ export default function Navbar({ lang }: { lang: Lang }) {
               onClick={() => goRegion("us")}
               className={[
                 "rounded-sm p-1 border transition",
-                region === "us" ? "border-green-400 bg-white" : "border-white/20 bg-white/10 hover:bg-white/15",
+                region === "us" ? "border-green-400 bg-white" : " bg-white",
               ].join(" ")}
               aria-label="USA"
               title="USA"
@@ -167,7 +167,7 @@ export default function Navbar({ lang }: { lang: Lang }) {
               onClick={() => goRegion("haiti")}
               className={[
                 "rounded-sm p-1 border transition",
-                region === "haiti" ? "border-green-400 bg-white" : "border-white/20 bg-white/10 hover:bg-white/15",
+                region === "haiti" ? "border-green-400 bg-white" : "bg-white",
               ].join(" ")}
               aria-label="Haiti"
               title="Haiti"
