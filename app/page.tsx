@@ -98,7 +98,7 @@ export default function RegionGate() {
           >
             <div className={`absolute inset-0 ${FLAG_PADDING} flex flex-col items-center justify-center`}>
                <div className="relative w-full h-full mb-2">
-                 <Image src="/images/usa-flag.png" alt="USA" fill className="object-contain group-hover:scale-105 transition" />
+                 <Image src="/images/usa.png" alt="USA" fill className="object-contain group-hover:scale-105 transition" />
                </div>
                <span className="font-bold text-slate-800">UNITED STATES</span>
             </div>
@@ -111,7 +111,7 @@ export default function RegionGate() {
           >
             <div className={`absolute inset-0 ${FLAG_PADDING} flex flex-col items-center justify-center`}>
                <div className="relative w-full h-full mb-2">
-                 <Image src="/images/haiti-flag.png" alt="Haiti" fill className="object-contain group-hover:scale-105 transition" />
+                 <Image src="/images/haiti.png" alt="Haiti" fill className="object-contain group-hover:scale-105 transition" />
                </div>
                <span className="font-bold text-slate-800">HAÏTI</span>
             </div>
