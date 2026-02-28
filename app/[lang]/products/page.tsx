@@ -381,7 +381,7 @@ export default function ProductsPage({ params }: Props) {
                     setPage(1);
                   }}
                   placeholder="Search products..."
-                  className="w-full rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black-800"
+                  className="w-full rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black-800 color:black"
                 />
               </div>
 
