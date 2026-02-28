@@ -33,16 +33,16 @@ const floatItems: FloatItem[] = [
  // size using clamp (works across screens) 
  "w-[clamp(160px,18vw,280px)] h-[clamp(160px,18vw,280px)] " +
  // position: bottom-left zone, safe distances 
- "left-[-6%] sm:left-[-4%] lg:left-[-3%] bottom-[-16%] sm:bottom-[-14%] lg:bottom-[-18%] " + "opacity-90", },
- { img: "/images/listproduc/beauty.png", alt: "beauty", className: "hidden md:block " + "w-[clamp(170px,20vw,320px)] h-[clamp(170px,20vw,320px)] " + "left-[18%] md:left-[16%] lg:left-[15%] top-[78%] md:top-[82%] lg:top-[84%] " + "opacity-85", }, 
-{ img: "/images/listproduc/fashion.png", alt: "fashion", className: "hidden sm:block " + "w-[clamp(150px,18vw,300px)] h-[clamp(150px,18vw,300px)] " + "right-[35%] sm:right-[31%] lg:right-[35%] top-[78%] sm:top-[82%] md:top-[84%] " + "opacity-90", },
-{ img: "/images/listproduc/home.png", alt: "home", className: "hidden lg:block " + "w-[clamp(220px,26vw,420px)] h-[clamp(220px,26vw,420px)] " + "right-[-6%] xl:right-[-4%] 2xl:right-[-2%] bottom-[8%] xl:bottom-[6%] " + "opacity-75", },
+ "left-[-6%] sm:left-[-4%] lg:left-[-3%] bottom-[-6%] sm:bottom-[-4%] lg:bottom-[-8%] " + "opacity-90", },
+ { img: "/images/listproduc/beauty.png", alt: "beauty", className: "hidden md:block " + "w-[clamp(170px,20vw,320px)] h-[clamp(170px,20vw,320px)] " + "left-[18%] md:left-[16%] lg:left-[15%] top-[68%] md:top-[72%] lg:top-[74%] " + "opacity-85", }, 
+{ img: "/images/listproduc/fashion.png", alt: "fashion", className: "hidden sm:block " + "w-[clamp(150px,18vw,300px)] h-[clamp(150px,18vw,300px)] " + "right-[35%] sm:right-[31%] lg:right-[35%] top-[68%] sm:top-[72%] md:top-[74%] " + "opacity-90", },
+{ img: "/images/listproduc/home.png", alt: "home", className: "hidden lg:block " + "w-[clamp(220px,26vw,420px)] h-[clamp(220px,26vw,420px)] " + "right-[-6%] xl:right-[-4%] 2xl:right-[-2%] bottom-[-8%] xl:bottom-[-6%] " + "opacity-75", },
  { img: "/images/listproduc/groce1.png", alt: "grocery", className: "hidden md:block " + "w-[clamp(160px,18vw,300px)] h-[clamp(160px,18vw,300px)] " + "left-[32%] md:left-[39%] lg:left-[43%] top-[5%] md:top-[2%] lg:top-[4%] " + "opacity-80", },
 { img: "/images/mhanac logo1.png", alt: "mhanac logo", className: 
   // show small on mobile, larger on desktop
    "block " +
    "w-[clamp(90px,12vw,210px)] h-[clamp(90px,12vw,210px)] " + 
-   "left-[8%] sm:left-[4%] top-[10%] sm:top-[10%] md:top-[14%] " + "opacity-90", priority: true, },
+   "left-[8%] sm:left-[4%] top-[20%] sm:top-[21%] md:top-[24%] " + "opacity-90", priority: true, },
 ];
 
 export default function RegionGate() {
