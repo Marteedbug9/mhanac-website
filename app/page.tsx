@@ -43,7 +43,7 @@ const floatItems: FloatItem[] = [
     className:
       "hidden md:block " +
       "w-[clamp(170px,20vw,320px)] h-[clamp(170px,20vw,320px)] " +
-      "left-[8%] md:left-[6%] lg:left-[5%] top-[8%] md:top-[12%] lg:top-[16%] " +
+      "left-[8%] md:left-[6%] lg:left-[5%] top-[-48%] md:top-[-52%] lg:top-[-54%] " +
       "opacity-85",
   },
   {
@@ -52,7 +52,7 @@ const floatItems: FloatItem[] = [
     className:
       "hidden sm:block " +
       "w-[clamp(150px,18vw,300px)] h-[clamp(150px,18vw,300px)] " +
-      "right-[25%] sm:right-[34%] lg:right-[-43%] top-[40%] sm:top-[42%] md:top-[44%] " +
+      "right-[25%] sm:right-[34%] lg:right-[-43%] top-[-48%] sm:top-[-52%] md:top-[-54%] " +
       "opacity-90",
   },
   {
@@ -61,7 +61,7 @@ const floatItems: FloatItem[] = [
     className:
       "hidden lg:block " +
       "w-[clamp(220px,26vw,420px)] h-[clamp(220px,26vw,420px)] " +
-      "right-[-6%] xl:right-[-4%] 2xl:right-[-2%] bottom-[18%] xl:bottom-[-16%] " +
+      "right-[-6%] xl:right-[-4%] 2xl:right-[-2%] bottom-[18%] xl:bottom-[16%] " +
       "opacity-75",
   },
   {
@@ -70,7 +70,7 @@ const floatItems: FloatItem[] = [
     className:
       "hidden md:block " +
       "w-[clamp(160px,18vw,300px)] h-[clamp(160px,18vw,300px)] " +
-      "left-[40%] md:left-[44%] lg:left-[46%] top-[50%] md:top-[52%] lg:top-[-24%] " +
+      "left-[40%] md:left-[44%] lg:left-[46%] top-[-45%] md:top-[-52%] lg:top-[-54%] " +
       "opacity-80",
   },
   {
