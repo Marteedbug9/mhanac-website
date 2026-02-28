@@ -361,9 +361,7 @@ export default function ProductsPage({ params }: Props) {
         <section className="mt-10">
           <div className="flex items-end justify-between gap-3">
             <div>
-              <h2 className="text-xl font-black text-slate-900">
-                {lang === "fr" ? "Produits" : lang === "ht" ? "Pwodwi" : "Products"}
-              </h2>
+              
               <div className="text-xs text-slate-600">
                 Region: <b>{region.toUpperCase()}</b> • Category: <b>{activeCategory}</b> •{" "}
                 <b>{filteredProducts.length}</b> results
