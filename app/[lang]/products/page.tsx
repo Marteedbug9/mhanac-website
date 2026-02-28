@@ -595,7 +595,7 @@ export default function ProductsPage({ params }: Props) {
                     setPage(1);
                   }}
                   placeholder="Search products..."
-                  className="w-full rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-green-300"
+                  className="w-full rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black-300"
                 />
               </div>
 
@@ -607,7 +607,7 @@ export default function ProductsPage({ params }: Props) {
                     setSortBy(e.target.value as any);
                     setPage(1);
                   }}
-                  className="w-full rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-green-300"
+                  className="w-full rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black-300"
                 >
                   <option value="best">Best</option>
                   <option value="new">New</option>
@@ -642,7 +642,7 @@ export default function ProductsPage({ params }: Props) {
                         setPriceMin(Number(e.target.value || 0));
                         setPage(1);
                       }}
-                      className="rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-green-300"
+                      className="rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-bleu-300"
                       placeholder="Min"
                     />
                     <input
@@ -652,7 +652,7 @@ export default function ProductsPage({ params }: Props) {
                         setPriceMax(Number(e.target.value || 0));
                         setPage(1);
                       }}
-                      className="rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-green-300"
+                      className="rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-bleu-300"
                       placeholder="Max"
                     />
                   </div>
@@ -707,7 +707,7 @@ export default function ProductsPage({ params }: Props) {
                             }}
                             className={[
                               "px-3 py-1 rounded-full border text-xs font-semibold transition",
-                              active ? "bg-[#E1EDDD] border-green-400" : "bg-white border-black/10 hover:border-green-300",
+                              active ? "bg-[#E1EDDD] border-green-400" : "bg-white border-black/10 hover:border-bleu-300",
                             ].join(" ")}
                           >
                             {c}
@@ -757,7 +757,7 @@ export default function ProductsPage({ params }: Props) {
                       setMinRating(Number(e.target.value));
                       setPage(1);
                     }}
-                    className="mt-2 w-full rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-green-300"
+                    className="mt-2 w-full rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-bleu-300"
                   >
                     <option value={0}>All</option>
                     <option value={3}>3+ stars</option>
@@ -781,7 +781,7 @@ export default function ProductsPage({ params }: Props) {
                     setQ("");
                     setPage(1);
                   }}
-                  className="mt-5 w-full rounded-xl border border-black/10 px-4 py-2 text-sm font-semibold hover:ring-2 hover:ring-green-300"
+                  className="mt-5 w-full rounded-xl border border-black/10 px-4 py-2 text-sm font-semibold hover:ring-2 hover:ring-bleu-300"
                 >
                   Reset filters
                 </button>
@@ -888,11 +888,7 @@ export default function ProductsPage({ params }: Props) {
           </div>
         </section>
 
-        {/* Marquee */}
-        <section className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <AutoMarqueeRow items={listA} direction="left" durationSec={MARQUEE_DURATION_SLOW} onAdd={(p) => add(p, 1)} />
-          <AutoMarqueeRow items={listB} direction="right" durationSec={MARQUEE_DURATION_FAST} onAdd={(p) => add(p, 1)} />
-        </section>
+        
 
         {/* promos + diaspora */}
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-4">
