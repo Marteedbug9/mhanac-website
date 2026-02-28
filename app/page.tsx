@@ -34,7 +34,7 @@ const floatItems: FloatItem[] = [
       // size using clamp (works across screens)
       "w-[clamp(160px,18vw,280px)] h-[clamp(160px,18vw,280px)] " +
       // position: bottom-left zone, safe distances
-      "left-[-6%] sm:left-[-4%] lg:left-[-3%] bottom-[-38%] sm:bottom-[-20%] lg:bottom-[-24%] " +
+      "left-[-6%] sm:left-[-4%] lg:left-[-3%] bottom-[-18%] sm:bottom-[-20%] lg:bottom-[-24%] " +
       "opacity-90",
   },
   {
@@ -43,7 +43,7 @@ const floatItems: FloatItem[] = [
     className:
       "hidden md:block " +
       "w-[clamp(170px,20vw,320px)] h-[clamp(170px,20vw,320px)] " +
-      "left-[8%] md:left-[6%] lg:left-[5%] top-[-48%] md:top-[-52%] lg:top-[-54%] " +
+      "left-[-18%] md:left-[-16%] lg:left-[-15%] top-[48%] md:top-[52%] lg:top-[-54%] " +
       "opacity-85",
   },
   {
@@ -52,7 +52,7 @@ const floatItems: FloatItem[] = [
     className:
       "hidden sm:block " +
       "w-[clamp(150px,18vw,300px)] h-[clamp(150px,18vw,300px)] " +
-      "right-[25%] sm:right-[34%] lg:right-[-43%] top-[-48%] sm:top-[-52%] md:top-[-54%] " +
+      "right-[-15%] sm:right-[-14%] lg:right-[-13%] top-[48%] sm:top-[52%] md:top-[54%] " +
       "opacity-90",
   },
   {
@@ -61,7 +61,7 @@ const floatItems: FloatItem[] = [
     className:
       "hidden lg:block " +
       "w-[clamp(220px,26vw,420px)] h-[clamp(220px,26vw,420px)] " +
-      "right-[-6%] xl:right-[-4%] 2xl:right-[-2%] bottom-[18%] xl:bottom-[16%] " +
+      "right-[-6%] xl:right-[-4%] 2xl:right-[-2%] bottom-[-18%] xl:bottom-[-16%] " +
       "opacity-75",
   },
   {
@@ -70,7 +70,7 @@ const floatItems: FloatItem[] = [
     className:
       "hidden md:block " +
       "w-[clamp(160px,18vw,300px)] h-[clamp(160px,18vw,300px)] " +
-      "left-[40%] md:left-[44%] lg:left-[46%] top-[-45%] md:top-[-52%] lg:top-[-54%] " +
+      "left-[48%] md:left-[49%] lg:left-[49%] top-[45%] md:top-[52%] lg:top-[54%] " +
       "opacity-80",
   },
   {
@@ -176,9 +176,7 @@ export default function RegionGate() {
             {phrases[i].text}
           </h1>
 
-          <p className="mt-2 text-white/85 text-sm sm:text-base">
-            {selected === "haiti" ? "Chwazi peyi ou pou kontinye." : "Select your country to continue."}
-          </p>
+         
 
           {/* Flags */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 mt-7">
