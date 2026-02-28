@@ -34,7 +34,7 @@ const floatItems: FloatItem[] = [
       // size using clamp (works across screens)
       "w-[clamp(160px,18vw,280px)] h-[clamp(160px,18vw,280px)] " +
       // position: bottom-left zone, safe distances
-      "left-[-6%] sm:left-[-4%] lg:left-[-3%] bottom-[-11%] sm:bottom-[-14%] lg:bottom-[-18%] " +
+      "left-[-6%] sm:left-[-4%] lg:left-[-3%] bottom-[-26%] sm:bottom-[-24%] lg:bottom-[-28%] " +
       "opacity-90",
   },
   {
@@ -43,7 +43,7 @@ const floatItems: FloatItem[] = [
     className:
       "hidden md:block " +
       "w-[clamp(170px,20vw,320px)] h-[clamp(170px,20vw,320px)] " +
-      "left-[18%] md:left-[16%] lg:left-[15%] top-[48%] md:top-[52%] lg:top-[54%] " +
+      "left-[18%] md:left-[16%] lg:left-[15%] top-[68%] md:top-[72%] lg:top-[64%] " +
       "opacity-85",
   },
   {
@@ -52,7 +52,7 @@ const floatItems: FloatItem[] = [
     className:
       "hidden sm:block " +
       "w-[clamp(150px,18vw,300px)] h-[clamp(150px,18vw,300px)] " +
-      "right-[5%] sm:right-[1%] lg:right-[-1%] top-[25%] sm:top-[22%] md:top-[24%] " +
+      "right-[25%] sm:right-[21%] lg:right-[21%] top-[65%] sm:top-[62%] md:top-[64%] " +
       "opacity-90",
   },
   {
@@ -61,7 +61,7 @@ const floatItems: FloatItem[] = [
     className:
       "hidden lg:block " +
       "w-[clamp(220px,26vw,420px)] h-[clamp(220px,26vw,420px)] " +
-      "right-[-6%] xl:right-[-4%] 2xl:right-[-2%] bottom-[18%] xl:bottom-[16%] " +
+      "right-[-6%] xl:right-[-4%] 2xl:right-[-2%] bottom-[8%] xl:bottom-[6%] " +
       "opacity-75",
   },
   {
@@ -70,7 +70,7 @@ const floatItems: FloatItem[] = [
     className:
       "hidden md:block " +
       "w-[clamp(160px,18vw,300px)] h-[clamp(160px,18vw,300px)] " +
-      "left-[28%] md:left-[29%] lg:left-[33%] top-[25%] md:top-[22%] lg:top-[24%] " +
+      "left-[32%] md:left-[39%] lg:left-[43%] top-[5%] md:top-[2%] lg:top-[4%] " +
       "opacity-80",
   },
   {
