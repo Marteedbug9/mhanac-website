@@ -42,7 +42,7 @@ const floatItems: FloatItem[] = [
   // show small on mobile, larger on desktop
    "block " +
    "w-[clamp(90px,12vw,210px)] h-[clamp(90px,12vw,210px)] " + 
-   "left-[8%] sm:left-[4%] top-[20%] sm:top-[21%] md:top-[24%] " + "opacity-90", priority: true, },
+   "left-[8%] sm:left-[4%] top-[-2%] sm:top-[-3%] md:top-[-4%] " + "opacity-90", priority: true, },
 ];
 
 export default function RegionGate() {
