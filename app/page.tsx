@@ -106,20 +106,7 @@ export default function RegionGate() {
 
   // ✅ OPTIONAL AUTO-REDIRECT:
   // If user already chose before, send them directly to the correct language page.
-  useEffect(() => {
-    if (typeof window === "undefined") return;
 
-    const savedRegion = (localStorage.getItem(STORAGE_KEY) as Region | null) ?? null;
-    const savedLang = localStorage.getItem(LANG_KEY);
-
-    if (
-      savedRegion &&
-      (savedRegion === "us" || savedRegion === "haiti") &&
-      (savedLang === "en" || savedLang === "ht")
-    ) {
-      router.replace(`/${savedLang}/products?region=${savedRegion}&category=deals`);
-    }
-  }, [router]);
 
   function choose(region: Region) {
     setSelected(region);
@@ -127,10 +114,7 @@ export default function RegionGate() {
     const lang = region === "us" ? "en" : "ht";
 
     // ✅ Save region + lang
-    if (typeof window !== "undefined") {
-      localStorage.setItem(STORAGE_KEY, region);
-      localStorage.setItem(LANG_KEY, lang);
-    }
+  
 
     // ✅ Go to translated route directly
     router.push(`/${lang}/products?region=${region}&category=deals`);
