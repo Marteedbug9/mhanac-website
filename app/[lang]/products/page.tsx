@@ -23,7 +23,7 @@ const STORAGE_KEY = "MHANAC_REGION";
 /* =========================================================
    ✅ QUICK EDIT ZONE
 ========================================================= */
-const TILE_GREEN = "bg-black";
+const TILE_GREEN = "bg-bleu";
 const TILE_WHITE = "bg-white";
 
 /* =========================================================
@@ -383,7 +383,7 @@ export default function ProductsPage({ params }: Props) {
                     setPage(1);
                   }}
                   placeholder="Search products..."
-                  className="w-full rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black-300"
+                  className="w-full rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-white-300"
                 />
               </div>
 
@@ -395,7 +395,7 @@ export default function ProductsPage({ params }: Props) {
                     setSortBy(e.target.value as any);
                     setPage(1);
                   }}
-                  className="w-full rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black-300"
+                  className="w-full rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-white-300"
                 >
                   <option value="best">Best</option>
                   <option value="new">New</option>
@@ -430,7 +430,7 @@ export default function ProductsPage({ params }: Props) {
                         setPriceMin(Number(e.target.value || 0));
                         setPage(1);
                       }}
-                      className="rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-bleu-300"
+                      className="rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blck-300"
                       placeholder="Min"
                     />
                     <input
@@ -440,7 +440,7 @@ export default function ProductsPage({ params }: Props) {
                         setPriceMax(Number(e.target.value || 0));
                         setPage(1);
                       }}
-                      className="rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-bleu-300"
+                      className="rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-white-300"
                       placeholder="Max"
                     />
                   </div>
@@ -726,7 +726,7 @@ export default function ProductsPage({ params }: Props) {
                   <button
                     type="button"
                     onClick={() => setCartOpen(true)}
-                    className="border border-black/10 text-slate-900 text-xs font-semibold px-4 py-2 rounded-full hover:ring-2 hover:ring-green-300"
+                    className="border border-black/10 text-slate-900 text-xs font-semibold px-4 py-2 rounded-full hover:ring-2 hover:ring-white-300"
                   >
                     Cart ({count})
                   </button>
@@ -799,7 +799,7 @@ export default function ProductsPage({ params }: Props) {
             <div className="lg:col-span-4 rounded-2xl border border-black/10 shadow-sm overflow-hidden bg-white">
               <div className="p-4">
                 <div className="text-sm font-black text-slate-900">Categories</div>
-                <div className="text-xs text-slate-600">2 rangées • 3 colonnes</div>
+             
               </div>
 
               <div className="px-4 pb-4 grid grid-cols-3 gap-3">
