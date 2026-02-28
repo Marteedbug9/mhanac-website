@@ -1,6 +1,19 @@
 import type { Lang } from "../i18n";
 import type { Region, CategoryKey } from "./categories";
 
+export type ProductCondition = "new" | "used" | "refurbished";
+export type ProductColor =
+  | "black"
+  | "white"
+  | "blue"
+  | "red"
+  | "green"
+  | "pink"
+  | "yellow"
+  | "gray"
+  | "brown"
+  | "multi";
+
 export type Product = {
   id: string;
   region: Region;
@@ -8,7 +21,14 @@ export type Product = {
   title: Record<Lang, string>;
   price: number;
   currency: "USD" | "HTG";
-  image?: string; // /images/...
+  image?: string;
+
+  // ✅ FILTER ATTRIBUTES
+  condition?: ProductCondition;
+  color?: ProductColor;
+  brand?: string;
+  rating?: number; // 0..5
+  isNew?: boolean;
 };
 
 export const MOCK_PRODUCTS: Product[] = [

@@ -1,31 +1,24 @@
 import type { ReactNode } from "react";
 import Navbar from "./components/Navbar";
-import type { Lang } from "./lib/i18n";
 import Footer from "./components/Footer";
+import type { Lang } from "./lib/i18n";
+import { CartProvider } from "@/app/providers/CartProvider";
 
-// On définit les params tels que Next.js les envoie (string)
+// ✅ Next.js envoie params (string). Chez toi: Promise<{ lang: string }>
 interface LayoutProps {
   children: ReactNode;
-  params: Promise<{ lang: string }>; 
+  params: Promise<{ lang: string }>;
 }
 
-export default async function LangLayout({
-  children,
-  params,
-}: LayoutProps) {
-  
-  // On récupère le paramètre
+export default async function LangLayout({ children, params }: LayoutProps) {
   const { lang } = await params;
-
-  // On force le type vers votre union 'Lang' ("en" | "fr" | etc.)
-  // car vous avez probablement un middleware qui filtre déjà les langues valides.
   const currentLang = lang as Lang;
 
   return (
-    <>
+    <CartProvider>
       <Navbar lang={currentLang} />
       {children}
       <Footer lang={currentLang} />
-    </>
+    </CartProvider>
   );
 }

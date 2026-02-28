@@ -27,15 +27,14 @@ export type Category = {
    * ✅ IMPORTANT:
    * On ne stocke plus les traductions ici.
    * Le label sera lu depuis i18n.ts => t[lang].categories[key]
-   * On garde ce champ seulement pour compatibilité si ton code l'utilise déjà.
    */
   label?: Partial<Record<Lang, string>>;
   icon?: string;
 };
 
 export const CATEGORIES: Category[] = [
-  { key: "deals", regions: ["us", "haiti"]},
-  { key: "electronics", regions: ["us", "haiti"]},
+  { key: "deals", regions: ["us", "haiti"] },
+  { key: "electronics", regions: ["us", "haiti"] },
   { key: "home_kitchen", regions: ["us", "haiti"] },
   { key: "beauty", regions: ["us", "haiti"] },
   { key: "fashion", regions: ["us", "haiti"] },
@@ -44,16 +43,18 @@ export const CATEGORIES: Category[] = [
   { key: "baby_kids", regions: ["us", "haiti"] },
   { key: "toys_games", regions: ["us", "haiti"] },
 
+  // ✅ Sport (mets ["us"] si tu veux US only)
+  { key: "sports_outdoors", regions: ["us", "haiti"] },
+
   // ✅ US only (selon ton choix)
-  { key: "sports_outdoors", regions: ["us"] },
-  { key: "automotive", regions: ["us"]},
+  { key: "automotive", regions: ["us"] },
   { key: "pet_supplies", regions: ["us"] },
 
-  { key: "tools_home_improvement", regions: ["us", "haiti"]},
-  { key: "office_school", regions: ["us", "haiti"]},
+  { key: "tools_home_improvement", regions: ["us", "haiti"] },
+  { key: "office_school", regions: ["us", "haiti"] },
 
   // ✅ Haiti only (selon ton choix)
-  { key: "services", regions: ["haiti"]},
+  { key: "services", regions: ["haiti"] },
 
   { key: "wholesale_bulk", regions: ["us", "haiti"] },
 ];
