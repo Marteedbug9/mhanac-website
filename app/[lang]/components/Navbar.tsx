@@ -2,12 +2,16 @@
 
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 import type { Lang } from "../lib/i18n";
 import { t } from "../lib/i18n";
 import type { CategoryKey, Region } from "../lib/catalog/categories";
 import { categoriesByRegion } from "../lib/catalog/categories";
+import type { Product } from "../lib/catalog/products";
+
+import { useCart } from "@/app/providers/CartProvider";
 
 const STORAGE_KEY = "MHANAC_REGION";
 
@@ -47,13 +51,151 @@ function CartIcon({ className = "" }: { className?: string }) {
   );
 }
 
+/* =========================================================
+   ✅ CartDrawer (dans le Navbar)
+========================================================= */
+function CartDrawer({
+  open,
+  onClose,
+  items,
+  subtotal,
+  remove,
+  setQty,
+  currencyLabel,
+  clear,
+}: {
+  open: boolean;
+  onClose: () => void;
+  items: { id: string; qty: number; product: Product }[];
+  subtotal: number;
+  remove: (id: string) => void;
+  setQty: (id: string, qty: number) => void;
+  currencyLabel: string;
+  clear: () => void;
+}) {
+  return (
+    <AnimatePresence>
+      {open ? (
+        <>
+          <motion.div
+            className="fixed inset-0 bg-black/40 z-[100]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+          />
+          <motion.div
+            className="fixed right-0 top-0 h-full w-[92vw] sm:w-[420px] bg-white z-[101] shadow-2xl flex flex-col"
+            initial={{ x: 420 }}
+            animate={{ x: 0 }}
+            exit={{ x: 420 }}
+            transition={{ type: "spring", stiffness: 260, damping: 26 }}
+          >
+            <div className="p-4 border-b border-black/10 flex items-center justify-between">
+              <div className="text-sm font-black text-slate-900">Your Cart</div>
+              <button
+                onClick={onClose}
+                className="w-9 h-9 rounded-full border border-black/10 hover:ring-2 hover:ring-green-300"
+                aria-label="Close"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="p-4 flex-1 overflow-auto space-y-3">
+              {items.length === 0 ? (
+                <div className="text-sm text-slate-600">Cart is empty.</div>
+              ) : (
+                items.map((it) => (
+                  <div
+                    key={it.id}
+                    className="rounded-2xl border border-black/10 p-3 flex gap-3"
+                  >
+                    <div className="relative w-16 h-16 rounded-xl bg-slate-50 overflow-hidden">
+                      <Image
+                        src={it.product.image ?? "/images/front.png"}
+                        alt="item"
+                        fill
+                        className="object-contain p-2"
+                      />
+                    </div>
+
+                    <div className="flex-1">
+                      <div className="text-xs font-bold text-slate-900 line-clamp-2">
+                        {it.product.title.en}
+                      </div>
+
+                      <div className="mt-2 flex items-center justify-between">
+                        <div className="text-sm font-black text-slate-900">
+                          {it.product.price.toLocaleString()} {currencyLabel}
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => setQty(it.id, it.qty - 1)}
+                            className="w-8 h-8 rounded-full border border-black/10 hover:ring-2 hover:ring-green-300"
+                          >
+                            −
+                          </button>
+                          <div className="w-8 text-center text-sm font-bold">{it.qty}</div>
+                          <button
+                            onClick={() => setQty(it.id, it.qty + 1)}
+                            className="w-8 h-8 rounded-full border border-black/10 hover:ring-2 hover:ring-green-300"
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => remove(it.id)}
+                        className="mt-2 text-xs font-semibold text-red-600 hover:underline"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            <div className="p-4 border-t border-black/10">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-slate-600">Subtotal</span>
+                <span className="font-black text-slate-900">
+                  {subtotal.toLocaleString()} {currencyLabel}
+                </span>
+              </div>
+
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                <button
+                  onClick={clear}
+                  className="rounded-xl border border-black/10 px-4 py-2 text-sm font-semibold hover:ring-2 hover:ring-green-300"
+                >
+                  Clear
+                </button>
+                <button className="rounded-xl bg-[#0b4fb3] text-white px-4 py-2 text-sm font-semibold hover:opacity-95">
+                  Checkout
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </>
+      ) : null}
+    </AnimatePresence>
+  );
+}
+
 export default function Navbar({ lang }: { lang: Lang }) {
   const router = useRouter();
-  const pathname = usePathname(); // ex: /en/products
-  const sp = useSearchParams(); // region, category, q...
+  const pathname = usePathname();
+  const sp = useSearchParams();
 
   const [region, setRegion] = useState<Region>("us");
   const [activeCategory, setActiveCategory] = useState<CategoryKey>("deals");
+
+  // ✅ Cart context
+  const { count, items, subtotal, remove, setQty, clear, open, setOpen } = useCart();
 
   // Init region + activeCategory
   useEffect(() => {
@@ -61,7 +203,9 @@ export default function Navbar({ lang }: { lang: Lang }) {
     const fromLS = typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null;
 
     const r: Region =
-      (isRegion(fromUrl) && fromUrl) || (isRegion(fromLS) && fromLS) || (lang === "en" ? "us" : "haiti");
+      (isRegion(fromUrl) && fromUrl) ||
+      (isRegion(fromLS) && fromLS) ||
+      (lang === "en" ? "us" : "haiti");
 
     setRegion(r);
     if (typeof window !== "undefined") localStorage.setItem(STORAGE_KEY, r);
@@ -73,21 +217,14 @@ export default function Navbar({ lang }: { lang: Lang }) {
 
   const categories = useMemo(() => categoriesByRegion(region), [region]);
 
-  /** ✅ même logique que ProductsPage:
-   *  - change region
-   *  - force /en si US, /ht si Haiti
-   *  - garde query params (region, category, q, etc.)
-   *  - garde la page actuelle (/products, /about, etc.)
-   */
   function goRegion(next: Region) {
     setRegion(next);
     if (typeof window !== "undefined") localStorage.setItem(STORAGE_KEY, next);
 
     const nextLang = forceLang(next);
-    const restPath = stripLangPrefix(pathname); // ex: "/products" ou "/"
+    const restPath = stripLangPrefix(pathname);
     const params = new URLSearchParams(sp.toString());
 
-    // force region + conserve category
     params.set("region", next);
     if (!params.get("category")) params.set("category", activeCategory);
 
@@ -99,8 +236,6 @@ export default function Navbar({ lang }: { lang: Lang }) {
     const params = new URLSearchParams(sp.toString());
     params.set("region", region);
     params.set("category", key);
-
-    // ✅ reste sur la même page, sans changer la langue
     router.replace(`${pathname}?${params.toString()}`);
   }
 
@@ -108,12 +243,20 @@ export default function Navbar({ lang }: { lang: Lang }) {
     return t[lang]?.categories?.[key] ?? t.en.categories[key] ?? key;
   }
 
+  const currencyLabel = region === "us" ? "USD" : "HTG";
+
   return (
     <header className={`${BLUE_BG} text-white w-full sticky top-0 z-50`}>
       {/* ===== TOP “GLASS LOOP BAR” ===== */}
       <div className="w-full px-3 sm:px-6 py-3">
-        <div className={[GLASS_BAR, "w-full rounded-md px-3 sm:px-4 py-2", "flex items-center gap-3"].join(" ")}>
-          {/* Logo + Name */}
+        <div
+          className={[
+            GLASS_BAR,
+            "w-full rounded-md px-3 sm:px-4 py-2",
+            "flex items-center justify-between gap-3",
+          ].join(" ")}
+        >
+          {/* ✅ Logo + Name (seulement) */}
           <button
             onClick={() => {
               const params = new URLSearchParams(sp.toString());
@@ -121,40 +264,30 @@ export default function Navbar({ lang }: { lang: Lang }) {
               if (!params.get("category")) params.set("category", activeCategory);
               router.push(`/${lang}/products?${params.toString()}`);
             }}
-            className="flex items-center gap-2 min-w-[110px]"
+            className="flex items-center gap-2 min-w-[140px]"
             aria-label="MHANAC Home"
           >
-            <div className="relative w-8 h-8 rounded-md bg-white/10 overflow-hidden">
-              <Image src="/images/mhanac%20logo1.png" alt="MHANAC" fill className="object-contain p-1" priority />
+            <div className="relative w-9 h-9 rounded-md bg-white/10 overflow-hidden">
+              <Image
+                src="/images/mhanac%20logo1.png"
+                alt="MHANAC"
+                fill
+                className="object-contain p-1"
+                priority
+              />
             </div>
             <span className="font-semibold text-sm sm:text-base">Mhanac</span>
           </button>
 
-          {/* Lang */}
-          <div className="hidden sm:flex items-center gap-1 text-white/80 text-sm">
-            <span className="uppercase">{lang}</span>
-            <span className="opacity-60">▾</span>
-          </div>
-
-          {/* Search (UI only) */}
-          <div className="flex-1 flex items-center gap-2">
-            <input
-              placeholder="Search"
-              className="h-9 w-full max-w-[420px] rounded-sm px-3 text-sm text-black outline-none bg-white"
-            />
-            <button className="h-9 px-4 rounded-sm bg-white text-black text-sm font-semibold" type="button">
-              Submit
-            </button>
-          </div>
-
-          {/* Flags */}
+          {/* ✅ Right side: Flags + Cart + Login */}
           <div className="flex items-center gap-2">
+            {/* Flags */}
             <button
               type="button"
               onClick={() => goRegion("us")}
               className={[
                 "rounded-sm p-1 border transition",
-                region === "us" ? "border-green-400 bg-white" : " bg-white",
+                region === "us" ? "border-green-400 bg-white" : "bg-white",
               ].join(" ")}
               aria-label="USA"
               title="USA"
@@ -174,29 +307,34 @@ export default function Navbar({ lang }: { lang: Lang }) {
             >
               <Image src="/images/haiti.png" alt="Haiti" width={28} height={18} />
             </button>
+
+            {/* Cart */}
+            <button
+              type="button"
+              onClick={() => setOpen(true)}
+              className="relative ml-1 p-2 rounded-sm bg-white/10 hover:bg-white/15 transition"
+              aria-label="Cart"
+              title="Cart"
+            >
+              <CartIcon className="w-5 h-5 text-white" />
+              <span className="absolute -top-2 -right-2 bg-green-400 text-black text-[11px] w-5 h-5 rounded-full grid place-items-center font-bold">
+                {count}
+              </span>
+            </button>
+
+            {/* Login / Sign in */}
+            <button
+              type="button"
+              onClick={() => router.push(`/${lang}/login`)}
+              className="ml-1 px-3 py-2 rounded-sm bg-transparent hover:bg-white/10 transition text-sm font-semibold"
+            >
+              Login / Sign in
+            </button>
           </div>
-
-          {/* Cart */}
-          <button
-            type="button"
-            className="relative ml-1 p-2 rounded-sm bg-white/10 hover:bg-white/15 transition"
-            aria-label="Cart"
-            title="Cart"
-          >
-            <CartIcon className="w-5 h-5 text-white" />
-            <span className="absolute -top-2 -right-2 bg-green-400 text-black text-[11px] w-5 h-5 rounded-full grid place-items-center font-bold">
-              0
-            </span>
-          </button>
-
-          {/* Login */}
-          <button type="button" className="ml-1 px-3 py-2 rounded-sm bg-transparent hover:bg-white/10 transition text-sm font-semibold">
-            Login <span className="opacity-70">▾</span>
-          </button>
         </div>
       </div>
 
-      {/* ===== CATEGORY LINE ===== */}
+      {/* ===== CATEGORY LINE (je la garde, car tu ne l'as pas demandé de supprimer) ===== */}
       <div className="w-full bg-white">
         <div className="w-full px-3 sm:px-6">
           <div className="flex items-center gap-3 overflow-x-auto no-scrollbar py-3">
@@ -210,7 +348,6 @@ export default function Navbar({ lang }: { lang: Lang }) {
                   onClick={() => goCategory(c.key)}
                   className={[
                     "group relative px-4 py-2 rounded-md transition",
-                    "bg-transparent",
                     active ? "text-slate-900 font-semibold" : "text-slate-500",
                     "hover:text-green-600",
                   ].join(" ")}
@@ -235,6 +372,18 @@ export default function Navbar({ lang }: { lang: Lang }) {
 
         <div className="h-[4px] bg-black/50" />
       </div>
+
+      {/* ✅ Cart Drawer rendu ici */}
+      <CartDrawer
+        open={open}
+        onClose={() => setOpen(false)}
+        items={items}
+        subtotal={subtotal}
+        remove={remove}
+        setQty={setQty}
+        currencyLabel={currencyLabel}
+        clear={clear}
+      />
     </header>
   );
 }

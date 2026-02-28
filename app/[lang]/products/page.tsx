@@ -569,214 +569,7 @@ export default function ProductsPage({ params }: Props) {
     <div className={`${PAGE_BG} min-h-screen w-full`}>
       <main className="w-full px-3 sm:px-4 py-5">
 
-        {/* Marquee */}
-        <section className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <AutoMarqueeRow items={listA} direction="left" durationSec={MARQUEE_DURATION_SLOW} onAdd={(p) => add(p, 1)} />
-          <AutoMarqueeRow items={listB} direction="right" durationSec={MARQUEE_DURATION_FAST} onAdd={(p) => add(p, 1)} />
-        </section>
-
-        {/* promos + diaspora */}
-        <div className="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-4">
-          <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-            {promoSlides.map((s) => (
-              <div
-                key={s.id}
-                className="relative overflow-hidden rounded-2xl bg-white border border-black/10 shadow-sm min-h-[190px]"
-              >
-                <div className="absolute inset-0">
-                  <Image src={s.image} alt={s.title} fill className="object-cover opacity-40" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/40" />
-                </div>
-                <div className="relative p-5">
-                  <div className="text-sm font-bold text-slate-900">{s.title}</div>
-                  <div className="text-xs text-slate-600 mt-1">{s.subtitle}</div>
-                  <button
-                    type="button"
-                    onClick={() => goCategory("deals")}
-                    className="mt-4 inline-flex items-center gap-2 bg-[#0b4fb3] text-white text-xs font-semibold px-4 py-2 rounded-full hover:opacity-95"
-                  >
-                    Shop <span>›</span>
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="lg:col-span-4 grid grid-cols-1 gap-4">
-            {diasporaCards.map((d) => (
-              <div key={d.id} className="rounded-2xl bg-white border border-black/10 shadow-sm overflow-hidden">
-                <div className="p-4">
-                  <div className="text-xs font-bold text-slate-900">{d.title}</div>
-                  <div className="text-[11px] text-slate-600">{d.subtitle}</div>
-                </div>
-                <div className="relative h-[150px] bg-gradient-to-b from-white to-slate-50">
-                  <Image src={d.image} alt={d.title} fill className="object-contain p-4" />
-                </div>
-                <div className="p-4 flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => goCategory("deals")}
-                    className="bg-[#0b4fb3] text-white text-xs font-semibold px-4 py-2 rounded-full"
-                  >
-                    Shop
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setCartOpen(true)}
-                    className="border border-black/10 text-slate-900 text-xs font-semibold px-4 py-2 rounded-full hover:ring-2 hover:ring-green-300"
-                  >
-                    Cart ({count})
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Ads carousel */}
-        <section className="mt-8">
-          <AdsCarousel slides={adsSlides} />
-        </section>
-
-        {/* Wholesale + categories tiles */}
-        <section className="mt-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-            <div className="lg:col-span-8 rounded-2xl border border-black/10 shadow-sm overflow-hidden bg-white">
-              <div className="p-4 flex items-center justify-between gap-3">
-                <div>
-                  <div className="text-sm font-black text-slate-900">Wholesale</div>
-                  <div className="text-xs text-slate-600">Horizontal diaporama</div>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => scrollRow(wholesaleRowRef, "left")}
-                    className="w-9 h-9 rounded-full bg-white shadow grid place-items-center hover:ring-2 hover:ring-green-400"
-                    aria-label="Wholesale left"
-                  >
-                    ‹
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => scrollRow(wholesaleRowRef, "right")}
-                    className="w-9 h-9 rounded-full bg-white shadow grid place-items-center hover:ring-2 hover:ring-green-400"
-                    aria-label="Wholesale right"
-                  >
-                    ›
-                  </button>
-                </div>
-              </div>
-
-              <div ref={wholesaleRowRef} className="px-4 pb-4 overflow-x-auto scroll-smooth no-scrollbar">
-                <div className="flex gap-4 min-w-max">
-                  {wholesaleCards.map((w, idx) => (
-                    <button
-                      key={w.id}
-                      type="button"
-                      onClick={() => goCategory("deals")}
-                      className={[
-                        WHOLESALE_CARD_W,
-                        "rounded-2xl overflow-hidden border border-black/10 shadow-sm text-left transition hover:ring-2 hover:ring-green-300",
-                      ].join(" ")}
-                    >
-                      <div className={`${idx % 2 === 0 ? TILE_GREEN : TILE_WHITE} p-3`}>
-                        <div className="text-xs font-black text-slate-900">{w.title}</div>
-                        <div className="text-[11px] text-slate-700">{w.sub}</div>
-                        <div className={`relative mt-3 ${WHOLESALE_IMG_H} rounded-xl overflow-hidden bg-white/40`}>
-                          <Image src={w.img} alt={w.title} fill className="object-contain p-3" />
-                        </div>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="lg:col-span-4 rounded-2xl border border-black/10 shadow-sm overflow-hidden bg-white">
-              <div className="p-4">
-                <div className="text-sm font-black text-slate-900">Categories</div>
-                <div className="text-xs text-slate-600">2 rangées • 3 colonnes</div>
-              </div>
-
-              <div className="px-4 pb-4 grid grid-cols-3 gap-3">
-                {categoryTiles.slice(0, 6).map((c, idx) => {
-                  const bg = idx % 2 === 0 ? TILE_GREEN : TILE_WHITE;
-                  return (
-                    <button
-                      key={c.title}
-                      type="button"
-                      onClick={() => goCategory((c.key as CategoryKey) ?? "deals")}
-                      className={[
-                        "rounded-2xl border border-black/10 overflow-hidden text-left transition hover:ring-2 hover:ring-green-300",
-                        bg,
-                      ].join(" ")}
-                      title={c.title}
-                    >
-                      <div className="p-2">
-                        <div className={`relative ${CAT_TILE_IMG_H}`}>
-                          <Image src={c.img} alt={c.title} fill className="object-contain p-2" />
-                        </div>
-                        <div className="mt-1 text-[11px] font-semibold text-slate-900 line-clamp-1">
-                          {(t[lang]?.categories as any)?.[c.key] ?? c.title}
-                        </div>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Deals slider */}
-        <section className="mt-8">
-          <div className="flex items-center justify-between gap-3">
-            <h2 className="text-lg font-black text-slate-900">{getCategoryLabel("deals", lang)}</h2>
-
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => scrollRow(dealsRowRef, "left")}
-                className="w-9 h-9 rounded-full bg-white shadow grid place-items-center hover:ring-2 hover:ring-green-400"
-              >
-                ‹
-              </button>
-              <button
-                type="button"
-                onClick={() => scrollRow(dealsRowRef, "right")}
-                className="w-9 h-9 rounded-full bg-white shadow grid place-items-center hover:ring-2 hover:ring-green-400"
-              >
-                ›
-              </button>
-            </div>
-          </div>
-
-          <div ref={dealsRowRef} className="mt-3 overflow-x-auto scroll-smooth no-scrollbar">
-            <div className="flex gap-4 min-w-max pb-2">
-              {deals.map((p) => (
-                <div key={p.id} className="w-[220px] rounded-2xl bg-white border border-black/10 shadow-sm overflow-hidden">
-                  <div className="relative h-[160px] bg-slate-50">
-                    <Image src={p.image ?? "/images/front.png"} alt="deal" fill className="object-contain p-4" />
-                  </div>
-                  <div className="p-3">
-                    <div className="text-xs font-semibold text-slate-900 line-clamp-2">{p.title[lang] ?? p.title.en}</div>
-                    <div className="mt-2 text-sm font-black text-slate-900">{formatMoney(p)}</div>
-                    <button
-                      type="button"
-                      onClick={() => add(p, 1)}
-                      className="mt-3 w-full bg-[#0b4fb3] text-white text-xs font-semibold py-2 rounded-full hover:opacity-95"
-                    >
-                      Add
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Products + Filters */}
+{/* Products + Filters */}
         <section className="mt-10">
           <div className="flex items-end justify-between gap-3">
             <div>
@@ -823,13 +616,7 @@ export default function ProductsPage({ params }: Props) {
                 </select>
               </div>
 
-              <button
-                type="button"
-                onClick={() => setCartOpen(true)}
-                className="w-full lg:w-auto rounded-xl bg-[#0b4fb3] text-white px-4 py-2 font-semibold text-sm hover:opacity-95"
-              >
-                Cart ({count})
-              </button>
+             
             </div>
 
             <div className="mt-3 text-xs text-slate-600">
@@ -1100,6 +887,215 @@ export default function ProductsPage({ params }: Props) {
             </div>
           </div>
         </section>
+
+        {/* Marquee */}
+        <section className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <AutoMarqueeRow items={listA} direction="left" durationSec={MARQUEE_DURATION_SLOW} onAdd={(p) => add(p, 1)} />
+          <AutoMarqueeRow items={listB} direction="right" durationSec={MARQUEE_DURATION_FAST} onAdd={(p) => add(p, 1)} />
+        </section>
+
+        {/* promos + diaspora */}
+        <div className="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-4">
+          <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+            {promoSlides.map((s) => (
+              <div
+                key={s.id}
+                className="relative overflow-hidden rounded-2xl bg-white border border-black/10 shadow-sm min-h-[190px]"
+              >
+                <div className="absolute inset-0">
+                  <Image src={s.image} alt={s.title} fill className="object-cover opacity-40" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/40" />
+                </div>
+                <div className="relative p-5">
+                  <div className="text-sm font-bold text-slate-900">{s.title}</div>
+                  <div className="text-xs text-slate-600 mt-1">{s.subtitle}</div>
+                  <button
+                    type="button"
+                    onClick={() => goCategory("deals")}
+                    className="mt-4 inline-flex items-center gap-2 bg-[#0b4fb3] text-white text-xs font-semibold px-4 py-2 rounded-full hover:opacity-95"
+                  >
+                    Shop <span>›</span>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="lg:col-span-4 grid grid-cols-1 gap-4">
+            {diasporaCards.map((d) => (
+              <div key={d.id} className="rounded-2xl bg-white border border-black/10 shadow-sm overflow-hidden">
+                <div className="p-4">
+                  <div className="text-xs font-bold text-slate-900">{d.title}</div>
+                  <div className="text-[11px] text-slate-600">{d.subtitle}</div>
+                </div>
+                <div className="relative h-[150px] bg-gradient-to-b from-white to-slate-50">
+                  <Image src={d.image} alt={d.title} fill className="object-contain p-4" />
+                </div>
+                <div className="p-4 flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => goCategory("deals")}
+                    className="bg-[#0b4fb3] text-white text-xs font-semibold px-4 py-2 rounded-full"
+                  >
+                    Shop
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setCartOpen(true)}
+                    className="border border-black/10 text-slate-900 text-xs font-semibold px-4 py-2 rounded-full hover:ring-2 hover:ring-green-300"
+                  >
+                    Cart ({count})
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Ads carousel */}
+        <section className="mt-8">
+          <AdsCarousel slides={adsSlides} />
+        </section>
+
+        {/* Wholesale + categories tiles */}
+        <section className="mt-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            <div className="lg:col-span-8 rounded-2xl border border-black/10 shadow-sm overflow-hidden bg-white">
+              <div className="p-4 flex items-center justify-between gap-3">
+                <div>
+                  <div className="text-sm font-black text-slate-900">Wholesale</div>
+                  <div className="text-xs text-slate-600">Horizontal diaporama</div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => scrollRow(wholesaleRowRef, "left")}
+                    className="w-9 h-9 rounded-full bg-white shadow grid place-items-center hover:ring-2 hover:ring-green-400"
+                    aria-label="Wholesale left"
+                  >
+                    ‹
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => scrollRow(wholesaleRowRef, "right")}
+                    className="w-9 h-9 rounded-full bg-white shadow grid place-items-center hover:ring-2 hover:ring-green-400"
+                    aria-label="Wholesale right"
+                  >
+                    ›
+                  </button>
+                </div>
+              </div>
+
+              <div ref={wholesaleRowRef} className="px-4 pb-4 overflow-x-auto scroll-smooth no-scrollbar">
+                <div className="flex gap-4 min-w-max">
+                  {wholesaleCards.map((w, idx) => (
+                    <button
+                      key={w.id}
+                      type="button"
+                      onClick={() => goCategory("deals")}
+                      className={[
+                        WHOLESALE_CARD_W,
+                        "rounded-2xl overflow-hidden border border-black/10 shadow-sm text-left transition hover:ring-2 hover:ring-green-300",
+                      ].join(" ")}
+                    >
+                      <div className={`${idx % 2 === 0 ? TILE_GREEN : TILE_WHITE} p-3`}>
+                        <div className="text-xs font-black text-slate-900">{w.title}</div>
+                        <div className="text-[11px] text-slate-700">{w.sub}</div>
+                        <div className={`relative mt-3 ${WHOLESALE_IMG_H} rounded-xl overflow-hidden bg-white/40`}>
+                          <Image src={w.img} alt={w.title} fill className="object-contain p-3" />
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-4 rounded-2xl border border-black/10 shadow-sm overflow-hidden bg-white">
+              <div className="p-4">
+                <div className="text-sm font-black text-slate-900">Categories</div>
+                <div className="text-xs text-slate-600">2 rangées • 3 colonnes</div>
+              </div>
+
+              <div className="px-4 pb-4 grid grid-cols-3 gap-3">
+                {categoryTiles.slice(0, 6).map((c, idx) => {
+                  const bg = idx % 2 === 0 ? TILE_GREEN : TILE_WHITE;
+                  return (
+                    <button
+                      key={c.title}
+                      type="button"
+                      onClick={() => goCategory((c.key as CategoryKey) ?? "deals")}
+                      className={[
+                        "rounded-2xl border border-black/10 overflow-hidden text-left transition hover:ring-2 hover:ring-green-300",
+                        bg,
+                      ].join(" ")}
+                      title={c.title}
+                    >
+                      <div className="p-2">
+                        <div className={`relative ${CAT_TILE_IMG_H}`}>
+                          <Image src={c.img} alt={c.title} fill className="object-contain p-2" />
+                        </div>
+                        <div className="mt-1 text-[11px] font-semibold text-slate-900 line-clamp-1">
+                          {(t[lang]?.categories as any)?.[c.key] ?? c.title}
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Deals slider */}
+        <section className="mt-8">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="text-lg font-black text-slate-900">{getCategoryLabel("deals", lang)}</h2>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => scrollRow(dealsRowRef, "left")}
+                className="w-9 h-9 rounded-full bg-white shadow grid place-items-center hover:ring-2 hover:ring-green-400"
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollRow(dealsRowRef, "right")}
+                className="w-9 h-9 rounded-full bg-white shadow grid place-items-center hover:ring-2 hover:ring-green-400"
+              >
+                ›
+              </button>
+            </div>
+          </div>
+
+          <div ref={dealsRowRef} className="mt-3 overflow-x-auto scroll-smooth no-scrollbar">
+            <div className="flex gap-4 min-w-max pb-2">
+              {deals.map((p) => (
+                <div key={p.id} className="w-[220px] rounded-2xl bg-white border border-black/10 shadow-sm overflow-hidden">
+                  <div className="relative h-[160px] bg-slate-50">
+                    <Image src={p.image ?? "/images/front.png"} alt="deal" fill className="object-contain p-4" />
+                  </div>
+                  <div className="p-3">
+                    <div className="text-xs font-semibold text-slate-900 line-clamp-2">{p.title[lang] ?? p.title.en}</div>
+                    <div className="mt-2 text-sm font-black text-slate-900">{formatMoney(p)}</div>
+                    <button
+                      type="button"
+                      onClick={() => add(p, 1)}
+                      className="mt-3 w-full bg-[#0b4fb3] text-white text-xs font-semibold py-2 rounded-full hover:opacity-95"
+                    >
+                      Add
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        
 
         {/* Seasons */}
         <section className="mt-10">
