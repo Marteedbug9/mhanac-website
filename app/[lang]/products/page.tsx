@@ -17,13 +17,13 @@ type Props = {
   params: Promise<{ lang: string }>;
 };
 
-const PAGE_BG = "bg-[#FFFFF0]";
+const PAGE_BG = "bg-[#F0FFFF]";
 const STORAGE_KEY = "MHANAC_REGION";
 
 /* =========================================================
    ✅ QUICK EDIT ZONE
 ========================================================= */
-const TILE_GREEN = "bg-[#E1EDDD]";
+const TILE_GREEN = "bg-black";
 const TILE_WHITE = "bg-white";
 
 /* =========================================================
@@ -38,8 +38,7 @@ const SEASON_TILE_IMG_H = "h-[150px] sm:h-[170px] md:h-[190px]";
 const SEASON_GRID_COLS = "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4";
 const SEASON_SECTION_GAP = "gap-4";
 
-const MARQUEE_DURATION_SLOW = 28;
-const MARQUEE_DURATION_FAST = 18;
+
 
 const ADS_AUTOPLAY_MS = 3500;
 
@@ -83,94 +82,7 @@ function uniq<T>(arr: T[]) {
 /* =========================================================
    ✅ Auto marquee row
 ========================================================= */
-function AutoMarqueeRow({
-  items,
-  direction,
-  durationSec,
-  onAdd,
-}: {
-  items: Product[];
-  direction: "left" | "right";
-  durationSec: number;
-  onAdd: (p: Product) => void;
-}) {
-  const doubled = [...items, ...items];
 
-  return (
-    <div className="relative overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm">
-      <div className="p-4 flex items-center justify-between">
-        <div className="text-sm font-black text-slate-900">
-          {direction === "left" ? "Trending (→)" : "Trending (←)"}
-        </div>
-        <div className="text-xs text-slate-600">Auto-scroll • {durationSec}s</div>
-      </div>
-
-      <div className="px-4 pb-4">
-        <div
-          className={[
-            "flex gap-4 w-max",
-            direction === "left" ? "marquee-left" : "marquee-right",
-          ].join(" ")}
-          style={{ ["--marquee-duration" as any]: `${durationSec}s` }}
-        >
-          {doubled.map((p, idx) => (
-            <div
-              key={`${p.id}-${idx}`}
-              className="w-[220px] rounded-2xl border border-black/10 overflow-hidden bg-white"
-            >
-              <div className="relative h-[150px] bg-slate-50">
-                <Image
-                  src={p.image ?? "/images/front.png"}
-                  alt={p.title.en}
-                  fill
-                  className="object-contain p-4"
-                />
-              </div>
-              <div className="p-3">
-                <div className="text-xs font-semibold text-slate-900 line-clamp-2">
-                  {p.title.en}
-                </div>
-                <div className="mt-2 text-sm font-black text-slate-900">{formatMoney(p)}</div>
-                <button
-                  type="button"
-                  onClick={() => onAdd(p)}
-                  className="mt-3 w-full bg-[#0b4fb3] text-white text-xs font-semibold py-2 rounded-full hover:opacity-95 active:scale-[0.98] transition"
-                >
-                  Add
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <style jsx>{`
-        .marquee-left {
-          animation: marqueeLeft var(--marquee-duration) linear infinite;
-        }
-        .marquee-right {
-          animation: marqueeRight var(--marquee-duration) linear infinite;
-        }
-        @keyframes marqueeLeft {
-          from {
-            transform: translateX(0);
-          }
-          to {
-            transform: translateX(-50%);
-          }
-        }
-        @keyframes marqueeRight {
-          from {
-            transform: translateX(-50%);
-          }
-          to {
-            transform: translateX(0);
-          }
-        }
-      `}</style>
-    </div>
-  );
-}
 
 /* =========================================================
    ✅ Ads Carousel
@@ -244,131 +156,7 @@ function AdsCarousel({
 /* =========================================================
    ✅ Cart Drawer
 ========================================================= */
-function CartDrawer({
-  open,
-  onClose,
-  items,
-  subtotal,
-  remove,
-  setQty,
-  currencyLabel,
-  clear,
-}: {
-  open: boolean;
-  onClose: () => void;
-  items: { id: string; qty: number; product: Product }[];
-  subtotal: number;
-  remove: (id: string) => void;
-  setQty: (id: string, qty: number) => void;
-  currencyLabel: string;
-  clear: () => void;
-}) {
-  return (
-    <AnimatePresence>
-      {open ? (
-        <>
-          <motion.div
-            className="fixed inset-0 bg-black/40 z-50"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-          />
-          <motion.div
-            className="fixed right-0 top-0 h-full w-[92vw] sm:w-[420px] bg-white z-50 shadow-2xl flex flex-col"
-            initial={{ x: 420 }}
-            animate={{ x: 0 }}
-            exit={{ x: 420 }}
-            transition={{ type: "spring", stiffness: 260, damping: 26 }}
-          >
-            <div className="p-4 border-b border-black/10 flex items-center justify-between">
-              <div className="text-sm font-black text-slate-900">Your Cart</div>
-              <button
-                onClick={onClose}
-                className="w-9 h-9 rounded-full border border-black/10 hover:ring-2 hover:ring-green-300"
-                aria-label="Close"
-              >
-                ✕
-              </button>
-            </div>
 
-            <div className="p-4 flex-1 overflow-auto space-y-3">
-              {items.length === 0 ? (
-                <div className="text-sm text-slate-600">Cart is empty.</div>
-              ) : (
-                items.map((it) => (
-                  <div key={it.id} className="rounded-2xl border border-black/10 p-3 flex gap-3">
-                    <div className="relative w-16 h-16 rounded-xl bg-slate-50 overflow-hidden">
-                      <Image
-                        src={it.product.image ?? "/images/front.png"}
-                        alt="item"
-                        fill
-                        className="object-contain p-2"
-                      />
-                    </div>
-
-                    <div className="flex-1">
-                      <div className="text-xs font-bold text-slate-900 line-clamp-2">
-                        {it.product.title.en}
-                      </div>
-
-                      <div className="mt-2 flex items-center justify-between">
-                        <div className="text-sm font-black text-slate-900">
-                          {it.product.price.toLocaleString()} {currencyLabel}
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <button
-                            onClick={() => setQty(it.id, it.qty - 1)}
-                            className="w-8 h-8 rounded-full border border-black/10 hover:ring-2 hover:ring-green-300"
-                          >
-                            −
-                          </button>
-                          <div className="w-8 text-center text-sm font-bold">{it.qty}</div>
-                          <button
-                            onClick={() => setQty(it.id, it.qty + 1)}
-                            className="w-8 h-8 rounded-full border border-black/10 hover:ring-2 hover:ring-green-300"
-                          >
-                            +
-                          </button>
-                        </div>
-                      </div>
-
-                      <button onClick={() => remove(it.id)} className="mt-2 text-xs font-semibold text-red-600 hover:underline">
-                        Remove
-                      </button>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-
-            <div className="p-4 border-t border-black/10">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-slate-600">Subtotal</span>
-                <span className="font-black text-slate-900">
-                  {subtotal.toLocaleString()} {currencyLabel}
-                </span>
-              </div>
-
-              <div className="mt-3 grid grid-cols-2 gap-2">
-                <button
-                  onClick={clear}
-                  className="rounded-xl border border-black/10 px-4 py-2 text-sm font-semibold hover:ring-2 hover:ring-green-300"
-                >
-                  Clear
-                </button>
-                <button className="rounded-xl bg-[#0b4fb3] text-white px-4 py-2 text-sm font-semibold hover:opacity-95">
-                  Checkout
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        </>
-      ) : null}
-    </AnimatePresence>
-  );
-}
 
 /* =========================================================
    ✅ PAGE
@@ -1132,16 +920,7 @@ export default function ProductsPage({ params }: Props) {
         </section>
 
         {/* Cart Drawer */}
-        <CartDrawer
-          open={cartOpen}
-          onClose={() => setCartOpen(false)}
-          items={items}
-          subtotal={subtotal}
-          remove={remove}
-          setQty={setQty}
-          clear={clear}
-          currencyLabel={region === "us" ? "USD" : "HTG"}
-        />
+       
       </main>
     </div>
   );
