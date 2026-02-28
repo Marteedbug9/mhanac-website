@@ -34,7 +34,7 @@ const floatItems: FloatItem[] = [
       // size using clamp (works across screens)
       "w-[clamp(160px,18vw,280px)] h-[clamp(160px,18vw,280px)] " +
       // position: bottom-left zone, safe distances
-      "left-[-6%] sm:left-[-4%] lg:left-[-3%] bottom-[-18%] sm:bottom-[-20%] lg:bottom-[-24%] " +
+      "left-[-6%] sm:left-[-4%] lg:left-[-3%] bottom-[-11%] sm:bottom-[-14%] lg:bottom-[-18%] " +
       "opacity-90",
   },
   {
@@ -43,7 +43,7 @@ const floatItems: FloatItem[] = [
     className:
       "hidden md:block " +
       "w-[clamp(170px,20vw,320px)] h-[clamp(170px,20vw,320px)] " +
-      "left-[-18%] md:left-[-16%] lg:left-[-15%] top-[48%] md:top-[52%] lg:top-[-54%] " +
+      "left-[18%] md:left-[16%] lg:left-[15%] top-[48%] md:top-[52%] lg:top-[54%] " +
       "opacity-85",
   },
   {
@@ -52,7 +52,7 @@ const floatItems: FloatItem[] = [
     className:
       "hidden sm:block " +
       "w-[clamp(150px,18vw,300px)] h-[clamp(150px,18vw,300px)] " +
-      "right-[-15%] sm:right-[-14%] lg:right-[-13%] top-[48%] sm:top-[52%] md:top-[54%] " +
+      "right-[5%] sm:right-[1%] lg:right-[-1%] top-[25%] sm:top-[22%] md:top-[24%] " +
       "opacity-90",
   },
   {
@@ -61,7 +61,7 @@ const floatItems: FloatItem[] = [
     className:
       "hidden lg:block " +
       "w-[clamp(220px,26vw,420px)] h-[clamp(220px,26vw,420px)] " +
-      "right-[-6%] xl:right-[-4%] 2xl:right-[-2%] bottom-[-18%] xl:bottom-[-16%] " +
+      "right-[-6%] xl:right-[-4%] 2xl:right-[-2%] bottom-[18%] xl:bottom-[16%] " +
       "opacity-75",
   },
   {
@@ -70,7 +70,7 @@ const floatItems: FloatItem[] = [
     className:
       "hidden md:block " +
       "w-[clamp(160px,18vw,300px)] h-[clamp(160px,18vw,300px)] " +
-      "left-[48%] md:left-[49%] lg:left-[49%] top-[45%] md:top-[52%] lg:top-[54%] " +
+      "left-[28%] md:left-[29%] lg:left-[33%] top-[25%] md:top-[22%] lg:top-[24%] " +
       "opacity-80",
   },
   {
@@ -80,7 +80,7 @@ const floatItems: FloatItem[] = [
       // show small on mobile, larger on desktop
       "block " +
       "w-[clamp(90px,12vw,210px)] h-[clamp(90px,12vw,210px)] " +
-      "left-[0%] sm:left-[2%] top-[-10%] sm:top-[-10%] md:top-[-14%] " +
+      "left-[8%] sm:left-[4%] top-[-10%] sm:top-[-10%] md:top-[-14%] " +
       "opacity-90",
     priority: true,
   },
