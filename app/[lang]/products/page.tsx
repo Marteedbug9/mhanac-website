@@ -381,7 +381,7 @@ export default function ProductsPage({ params }: Props) {
                     setPage(1);
                   }}
                   placeholder="Search products..."
-                  className="w-full rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black-800 color:black"
+                  className="w-full rounded-xl border border-black/10 px-3 py-2 text-sm outline-none text-[11px] font-bold text-slate-700 mb-1 color:black"
                 />
               </div>
 
@@ -393,7 +393,7 @@ export default function ProductsPage({ params }: Props) {
                     setSortBy(e.target.value as any);
                     setPage(1);
                   }}
-                  className="w-full rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black-800"
+                  className="w-full rounded-xl border border-black/10 px-3 py-2 text-sm outline-none ftext-[11px] font-bold text-slate-700 mb-1"
                 >
                   <option value="best">Best</option>
                   <option value="new">New</option>
@@ -428,7 +428,7 @@ export default function ProductsPage({ params }: Props) {
                         setPriceMin(Number(e.target.value || 0));
                         setPage(1);
                       }}
-                      className="rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black-800"
+                      className="rounded-xl border border-black/10 px-3 py-2 text-sm outline-none text-[11px] font-bold text-slate-700 mb-1"
                       placeholder="Min"
                     />
                     <input
@@ -438,7 +438,7 @@ export default function ProductsPage({ params }: Props) {
                         setPriceMax(Number(e.target.value || 0));
                         setPage(1);
                       }}
-                      className="rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black-800"
+                      className="rounded-xl border border-black/10 px-3 py-2 text-sm outline-none text-[11px] font-bold text-slate-700 mb-1"
                       placeholder="Max"
                     />
                   </div>
@@ -543,7 +543,7 @@ export default function ProductsPage({ params }: Props) {
                       setMinRating(Number(e.target.value));
                       setPage(1);
                     }}
-                    className="mt-2 w-full rounded-xl border border-black/10 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-black-800"
+                    className="mt-2 w-full rounded-xl border border-black/10 px-3 py-2 text-sm outline-none text-[11px] font-bold text-slate-700 mb-1"
                   >
                     <option value={0}>All</option>
                     <option value={3}>3+ stars</option>
@@ -567,7 +567,7 @@ export default function ProductsPage({ params }: Props) {
                     setQ("");
                     setPage(1);
                   }}
-                  className="mt-5 w-full rounded-xl border border-black/10 px-4 py-2 text-sm font-semibold hover:ring-2 hover:ring-black-800"
+                  className="mt-5 w-full rounded-xl border border-black/10 px-4 py-2 text-sm font-semibold text-[11px] font-bold text-slate-700 mb-1"
                 >
                   Reset filters
                 </button>
