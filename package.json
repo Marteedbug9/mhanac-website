@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "start": "serve -s dist -l $PORT",
+
     "lint:css": "stylelint \"src/**/*.css\" --fix --quiet",
     "lint:js": "eslint . --ext ts,tsx --report-unused-disable-directives",
     "lint:types": "tsc --noEmit",
@@ -15,6 +17,7 @@
     "lint": "bun run lint:types && bun run lint:js && bun run lint:css && bun run check:css-vars && bun run check:css-classes"
   },
   "devDependencies": {
+    "serve": "^14.2.5",
     "typescript": "~5.9.3",
     "vite": "^7.2.4"
   },
