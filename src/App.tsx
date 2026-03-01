@@ -34,7 +34,7 @@ const rootRoute = createRootRoute({
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 bg-white rounded-md flex items-center justify-center overflow-hidden">
-                    <img src="/images/mhanac logo1.png" alt="MHANAC" className="w-full h-full object-contain" />
+                    <img src="/images/llogo1.png" alt="MHANAC" className="w-full h-full object-contain" />
                   </div>
                   <h3 className="text-xl font-black italic tracking-tighter">MHANAC</h3>
                 </div>
