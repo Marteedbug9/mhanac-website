@@ -56,7 +56,7 @@ export default function Navbar() {
             <Link to="/home" className="flex items-center gap-2">
               <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center overflow-hidden">
                 <img 
-                  src="/images/mhanac logo1.png" 
+                  src="/images/llogo1.png" 
                   alt="MHANAC" 
                   className="w-full h-full object-contain"
                   onError={(e) => {
