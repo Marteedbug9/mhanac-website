@@ -449,7 +449,7 @@ export default function Home() {
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
           
           <div className="relative z-10 space-y-4 max-w-lg">
-            <h2 className="text-4xl font-bold">Join the Diaspora Community</h2>
+            <h2 className="text-4xl font-bold">Join the MHANAC Community</h2>
             <p className="text-primary-foreground/80 font-medium">Get early access to exclusive deals, seasonal launches, and local products delivered to your door.</p>
           </div>
           
